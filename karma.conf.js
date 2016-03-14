@@ -22,9 +22,10 @@ module.exports = function(config) {
             'dist/**/!(*.spec).js': [ 'coverage', 'sourcemap' ]
         },
 
-        reporters: [ 'progress', 'coverage' ],
+        reporters: [ 'progress', 'coverage-allsources', 'coverage' ],
         coverageReporter: {
             dir: 'coverage/',
+            include: 'dist/**/!(*.spec).js',
             reporters: [
                 { type: 'json', subdir: '.' }
             ]
