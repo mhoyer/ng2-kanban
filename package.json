@@ -5,9 +5,8 @@
     "start": "concurrently \"npm run watch\" \"npm run lite\" ",
     "watch": "watch \"tsc --outDir dist && tslint src/**/*.ts\" src",
     "build": "tsc --outDir dist && tslint src/**/*.ts",
-    "clean:reports": "rm -r ./report",
-    "remap-istanbul": "remap-istanbul -i ./report/coverage/coverage-final.json -o ./report/coverage/html-report -t html",
-    "test": "npm run clean:reports && npm run tsc && karma start && npm run remap-istanbul",
+    "remap-istanbul": "remap-istanbul -i ./coverage/coverage-final.json -o ./coverage -t html",
+    "test": "tsc --outDir dist && karma start && npm run remap-istanbul",
     "lite": "lite-server",
     "typings": "typings",
     "postinstall": "typings install"
