@@ -2,9 +2,9 @@
   "name": "ng2-kanban",
   "version": "0.1.0",
   "scripts": {
-    "start": "concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
+    "start": "concurrently \"npm run watch\" \"npm run lite\" ",
+    "watch": "watch \"tsc --outDir dist && tslint src/**/*.ts\" src",
+    "build": "tsc --outDir dist && tslint src/**/*.ts",
     "lite": "lite-server",
     "typings": "typings",
     "postinstall": "typings install"
@@ -24,6 +24,7 @@
     "lite-server": "^2.1.0",
     "tslint": "^3.6.0",
     "typescript": "^1.8.7",
-    "typings": "^0.7.5"
+    "typings": "^0.7.5",
+    "watch": "^0.17.1"
   }
 }
