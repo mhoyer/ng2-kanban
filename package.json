@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "scripts": {
     "start": "concurrently \"npm run watch\" \"npm run lite\" ",
-    "watch": "watch \"tsc --outDir dist && tslint src/**/*.ts\" src",
+    "watch": "concurrently \"npm run watch:build\" \"karma start --auto-watch --no-single-run\"",
+    "watch:build": "watch \"tsc --outDir dist && tslint src/**/*.ts\" src",
     "build": "tsc --outDir dist && tslint src/**/*.ts",
     "remap-istanbul": "remap-istanbul -i ./coverage/coverage-final.json -o ./coverage -t html",
     "test": "tsc --outDir dist && karma start && npm run remap-istanbul",
