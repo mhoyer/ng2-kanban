@@ -9,6 +9,9 @@ System.config({
         'angular2/*': 'node_modules/angular2/*.js',
         'rxjs/*': 'node_modules/rxjs/*.js'
     },
+    map: {
+        'redux-typed-ducks': 'node_modules/redux-typed-ducks/dist/index.js',
+    },
     packages: {        
         'dist': {
             format: 'register',
