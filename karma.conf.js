@@ -22,19 +22,19 @@ module.exports = function(config) {
             'dist/**/!(*.spec).js': [ 'coverage', 'sourcemap' ]
         },
 
-        reporters: [ 'progress', 'coverage-allsources', 'coverage' ],
+        reporters: [ 'mocha', 'coverage' ],
         coverageReporter: {
             dir: 'coverage/',
             include: 'dist/**/!(*.spec).js',
             reporters: [
-                { type: 'json', subdir: '.' }
+                { type: 'json', subdir: '.' },
+                { type: 'text-summary' }
             ]
         },
         
         autoWatch: false,
-        restartOnFileChange: true,
         browsers: [ 'Chrome' ],
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_WARN,
         singleRun: true
     });
 };
