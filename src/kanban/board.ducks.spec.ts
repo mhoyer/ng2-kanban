@@ -56,6 +56,52 @@ describe('Board reducers', () => {
         });
     });
 
+    describe('Renaming a board', () => {
+        const firstBoard = { title: 'first', columns: [] };
+        const secondBoard = { title: 'second', columns: [] };
+
+        beforeEach(() => {
+            prevState = Immutable({
+                boards: [firstBoard, secondBoard],
+                activeBoard: 0
+            });
+        });
+
+        it('does not change when board id is out of range', () => {
+            const renameAction = boardDucks.rename({boardId: 3, title: 'updated'});
+            const nextState = boardReducer(prevState, renameAction);
+            expect(nextState).toBe(prevState);
+        });
+
+        describe('w/o providing an id', () => {
+            it('sets the new title of the currently active board', () => {
+                const renameAction = boardDucks.rename({title: 'updated'});
+                const nextState = boardReducer(prevState, renameAction);
+                expect(nextState.boards[0].title).toBe('updated');
+            });
+
+            it('keeps the title of the other board(s)', () => {
+                const renameAction = boardDucks.rename({title: 'updated'});
+                const nextState = boardReducer(prevState, renameAction);
+                expect(nextState.boards[1].title).toBe('second');
+            });
+        });
+
+        describe('with spcified id', () => {
+            it('sets the new title of that one', () => {
+                const renameAction = boardDucks.rename({boardId: 1, title: 'updated'});
+                const nextState = boardReducer(prevState, renameAction);
+                expect(nextState.boards[1].title).toBe('updated');
+            });
+
+            it('keeps the title of the other board(s)', () => {
+                const renameAction = boardDucks.rename({boardId: 1, title: 'updated'});
+                const nextState = boardReducer(prevState, renameAction);
+                expect(nextState.boards[0].title).toBe('first');
+            });
+        });
+    });
+
     describe('Selecting a board', () => {
         const firstBoard = { title: 'first', columns: [] };
         const secondBoard = { title: 'second', columns: [] };

@@ -3,7 +3,8 @@ import {KanbanState, Board} from '../types';
 
 export const boardDucks = {
     create: createDuck('board/CREATE', createBoardReducer),
-    select: createDuck('board/SELECT', selectBoardReducer)
+    rename: createDuck('board/RENAME', renameBoardReducer),
+    select: createDuck('board/SELECT', selectBoardReducer),
 };
 
 export function createBoardReducer(state: KanbanState, payload: {newBoard: Board}): KanbanState {
@@ -13,6 +14,16 @@ export function createBoardReducer(state: KanbanState, payload: {newBoard: Board
     return state
         .set('boards', boards)
         .set('activeBoard', activeBoard);
+}
+
+export function renameBoardReducer(state: KanbanState, payload: { title: string, boardId?: number }): KanbanState {
+    const boardId = payload.boardId || state.activeBoard;
+
+    if (boardId >= 0 && boardId < state.boards.length) {
+        return state.setIn(['boards', boardId, 'title'], payload.title);
+    }
+
+    return state;
 }
 
 export function selectBoardReducer(state: KanbanState, boardId: number): KanbanState {

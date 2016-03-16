@@ -15,6 +15,8 @@ import KanbanActions from './kanban.duck';
         </ul>
         <div *ngIf="selectedBoard">
             <h3>{{selectedBoard.title}}</h3>
+            <input [value]="selectedBoard.title" #boardTitleEditor />
+            <button (click)="renameBoard(boardTitleEditor.value)">Rename</button>
             <button (click)="createColumn()">Create Column</button>
             <ul>
                 <li *ngFor="#column of selectedBoard.columns">
@@ -49,6 +51,10 @@ export default class KanbanComponent {
             title: `${this.selectedBoard.columns.length + 1}. Column`
         };
         this.kanbanActions.column.create({boardId, newColumn});
+    }
+
+    renameBoard(title) {
+        this.kanbanActions.board.rename({ title });
     }
 
     selectBoard(boardId) {
