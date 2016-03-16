@@ -56,6 +56,39 @@ describe('Column reducers', () => {
         });
     });
 
+    describe('Renaming a column', () => {
+        const firstColumn = { title: 'first column' };
+
+        beforeEach(() => {
+            const firstBoard = { title: 'first board', columns: [ firstColumn ] };
+            prevState = Immutable({
+                boards: [ firstBoard ],
+                activeBoard: 0
+            });
+        });
+
+        it('updates its title', () => {
+            const renameAction = columnDucks.rename({boardId: 0, columnId: 0, title: 'updated'});
+            const nextState = columnReducer(prevState, renameAction);
+
+            expect(nextState.boards[0].columns[0].title).toBe('updated');
+        });
+
+        it('keeps the previous state when column id is out of range', () => {
+            const renameAction = columnDucks.rename({boardId: 0, columnId: 3, title: 'updated'});
+            const nextState = columnReducer(prevState, renameAction);
+
+            expect(nextState).toBe(prevState);
+        });
+
+        it('keeps the previous state when board id is out of range', () => {
+            const renameAction = columnDucks.rename({boardId: 1, columnId: 0, title: 'updated'});
+            const nextState = columnReducer(prevState, renameAction);
+
+            expect(nextState).toBe(prevState);
+        });
+    });
+
     describe('Deleting a column', () => {
         const firstColumn = { title: 'first column' };
 

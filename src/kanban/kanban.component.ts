@@ -23,6 +23,8 @@ import KanbanActions from './kanban.duck';
             <ul>
                 <li *ngFor="#column of selectedBoard.columns; #colId = index">
                     {{column.title}}
+                    <input [value]="column.title" #columnTitleEditor />
+                    <button (click)="renameColumn(colId, columnTitleEditor.value)">Rename</button>
                     <button (click)="deleteColumn(colId)">Delete Column</button>
                 </li>
             </ul>
@@ -59,6 +61,11 @@ export default class KanbanComponent {
     deleteColumn(columnId) {
         const boardId = this.state.activeBoard;
         this.kanbanActions.column.delete({boardId, columnId});
+    }
+
+    renameColumn(columnId, title) {
+        const boardId = this.state.activeBoard;
+        this.kanbanActions.column.rename({boardId, columnId, title});
     }
 
     deleteBoard(boardId?) {
