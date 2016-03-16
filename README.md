@@ -40,7 +40,7 @@ An attempt to create a slightly more complex application instead of a boring tod
 - title
 - list of cards
 ##### Actions
-- create card
+- √ create card
 - move card
 - √ update column (title)
 - √ delete column
