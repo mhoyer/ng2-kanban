@@ -23,36 +23,32 @@ An attempt to create a slightly more complex application instead of a boring tod
 - list of boards
 - active board
 ##### Actions
-- select active board
-- create board
+- √ select active board
+- √ create board
 
 #### Board
 ##### Properties
 - title
-- isTitleEditing
 - list of columns
 ##### Actions
-- create column
-- update board (title)
-- delete board
+- √ create column
+- √ update board (title)
+- √ delete board
 
 #### Column
 ##### Properties
 - title
-- isTitleEditing
 - list of cards
 ##### Actions
 - create card
 - move card
-- update column (title)
-- delete column
+- √ update column (title)
+- √ delete column
 
 #### Card
 ##### Properties
 - title
 - description
-- isTitleEditing
-- isDescriptionEditing
 ##### Actions
 - update card (title, description)
 - delete card
