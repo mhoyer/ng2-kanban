@@ -1,3 +1,4 @@
+import Immutable from 'seamless-immutable';
 import {createDispatchedActions, createReducer} from 'redux-typed-ducks';
 import {boardDucks} from './board.ducks';
 import {KanbanState} from '../types';
@@ -11,10 +12,10 @@ describe('Board reducers', () => {
         const createAction = boardDucks.create({newBoard});
 
         beforeEach(() => {
-            prevState = {
+            prevState = Immutable({
                 boards: [],
                 activeBoard: -1
-            };
+            });
         });
 
         it('adds board to list', () => {
@@ -36,10 +37,10 @@ describe('Board reducers', () => {
         const createAction = boardDucks.create({newBoard});
 
         beforeEach(() => {
-            prevState = {
+            prevState = Immutable({
                 boards: [firstBoard],
                 activeBoard: 0
-            };
+            });
         });
 
         it('adds board to the end of the list', () => {
@@ -60,10 +61,10 @@ describe('Board reducers', () => {
         const secondBoard = { title: 'second', columns: [] };
 
         beforeEach(() => {
-            prevState = {
+            prevState = Immutable({
                 boards: [firstBoard, secondBoard],
                 activeBoard: 0
-            };
+            });
         });
 
         it('sets the chosen one active', () => {

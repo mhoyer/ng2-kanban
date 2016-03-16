@@ -11,6 +11,7 @@ System.config({
     },
     map: {
         'redux-typed-ducks': 'node_modules/redux-typed-ducks/dist/index.js',
+        'seamless-immutable': 'node_modules/seamless-immutable/seamless-immutable.development.js',
     },
     packages: {        
         'dist': {

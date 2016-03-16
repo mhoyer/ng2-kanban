@@ -6,24 +6,8 @@ export const columnDucks = {
 };
 
 export function createColumnReducer(state: KanbanState, payload: { boardId: number, newColumn: Column }): KanbanState {
-    const activeBoard = state.activeBoard;
+    const board = state.boards[payload.boardId];
+    const columns = board.columns.concat(payload.newColumn);
 
-    const boards = state.boards.map((board, i) => {
-        if (i !== payload.boardId) {
-            return board;
-        };
-
-        const newBoard: Board = {
-            title: board.title,
-            columns: board.columns.concat(payload.newColumn),
-        };
-        return newBoard;
-    });
-
-    const newState: KanbanState = {
-        boards,
-        activeBoard
-    };
-
-    return newState;
+    return state.setIn(['boards', payload.boardId, 'columns'], columns);
 }

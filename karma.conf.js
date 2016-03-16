@@ -13,6 +13,7 @@ module.exports = function(config) {
             {pattern: 'node_modules/angular2/**/*.js', included: false, watched: false},
             {pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false, served: true},
             {pattern: 'node_modules/redux-typed-ducks/dist/**/*.js', included: false, watched: false, served: true},
+            {pattern: 'node_modules/seamless-immutable/*.js', included: false, watched: false, served: true},
             
             { pattern: 'dist/**/*.js', included: false, watched: true },
             'karma.runner.js' // main entry point

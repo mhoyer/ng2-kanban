@@ -1,3 +1,4 @@
+import Immutable from 'seamless-immutable';
 import {createDispatchedActions, createReducer} from 'redux-typed-ducks';
 import {columnDucks} from './column.ducks';
 import {KanbanState} from '../types';
@@ -11,12 +12,12 @@ describe('Column reducers', () => {
         const createAction = columnDucks.create({boardId: 0, newColumn});
 
         beforeEach(() => {
-            prevState = {
+            prevState = Immutable({
                 boards: [
                     { title: 'first board', columns: [] }
                 ],
                 activeBoard: 0
-            };
+            });
         });
 
         it('adds column to list', () => {
@@ -34,10 +35,10 @@ describe('Column reducers', () => {
 
         beforeEach(() => {
             const firstBoard = { title: 'first board', columns: [ firstColumn ] };
-            prevState = {
+            prevState = Immutable({
                 boards: [ firstBoard ],
                 activeBoard: 0
-            };
+            });
         });
 
         it('adds column to the end of the list', () => {

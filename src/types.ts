@@ -1,7 +1,7 @@
-export interface KanbanState {
+export type KanbanState = Immutable<{
     boards: Board[];
     activeBoard: number;
-}
+}>;
 
 export interface Board {
     title: string;

@@ -7,10 +7,12 @@ export const boardDucks = {
 };
 
 export function createBoardReducer(state: KanbanState, payload: {newBoard: Board}): KanbanState {
+    const activeBoard = state.boards.length;
     const boards = state.boards.concat(payload.newBoard);
-    const activeBoard = boards.length - 1;
 
-    return Object.assign({}, state, {boards, activeBoard});
+    return state
+        .set('boards', boards)
+        .set('activeBoard', activeBoard);
 }
 
 export function selectBoardReducer(state: KanbanState, boardId: number): KanbanState {
@@ -18,6 +20,5 @@ export function selectBoardReducer(state: KanbanState, boardId: number): KanbanS
     if (activeBoard >= state.boards.length) {
         return state;
     }
-
-    return Object.assign({}, state, {activeBoard});
+    return state.set('activeBoard', activeBoard);
 }
