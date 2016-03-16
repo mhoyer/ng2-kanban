@@ -4,24 +4,22 @@ import {columnDucks} from './column.ducks';
 import {KanbanState} from '../types';
 
 let prevState: KanbanState;
-const columnReducer = createReducer(columnDucks, prevState);
+const initState: KanbanState = Immutable({
+    boards: [{
+        title: '',
+        columns: []
+    }],
+    activeBoard: 0
+});
+const columnReducer = createReducer(columnDucks, initState);
 
 describe('Column reducers', () => {
     describe('Creating an initial first column', () => {
         const newColumn = { title: 'new Column', cards: [] };
 
-        beforeEach(() => {
-            prevState = Immutable({
-                boards: [
-                    { title: 'first board', columns: [] }
-                ],
-                activeBoard: 0
-            });
-        });
-
         it('adds column to list', () => {
             const createAction = columnDucks.create({boardId: 0, newColumn});
-            const nextState = columnReducer(prevState, createAction);
+            const nextState = columnReducer(initState, createAction);
 
             expect(nextState.boards[0].columns.length).toBe(1);
             expect(nextState.boards[0].columns[0].title).toBe('new Column');
@@ -29,30 +27,24 @@ describe('Column reducers', () => {
 
         it('keeps the previous state when board id is out of range', () => {
             const createAction = columnDucks.create({boardId: 1, newColumn});
-            const nextState = columnReducer(prevState, createAction);
+            const nextState = columnReducer(initState, createAction);
 
-            expect(nextState).toBe(prevState);
+            expect(nextState).toBe(initState);
         });
     });
 
     describe('Creating a second column', () => {
-        const firstColumn = { title: 'first column', cards: [] };
-        const newColumn = { title: 'second column', cards: [] };
-
-        beforeEach(() => {
-            const firstBoard = { title: 'first board', columns: [ firstColumn ] };
-            prevState = Immutable({
-                boards: [ firstBoard ],
-                activeBoard: 0
-            });
-        });
+        const firstColumn = { title: 'first', cards: [] };
+        const newColumn = { title: 'new column', cards: [] };
 
         it('adds column to the end of the list', () => {
+            prevState = initState.setIn(['boards', 0, 'columns'], [firstColumn]);
+
             const createAction = columnDucks.create({boardId: 0, newColumn});
             const nextState = columnReducer(prevState, createAction);
 
             expect(nextState.boards[0].columns.length).toBe(2);
-            expect(nextState.boards[0].columns[1].title).toBe('second column');
+            expect(nextState.boards[0].columns[1].title).toBe('new column');
         });
     });
 
@@ -60,11 +52,7 @@ describe('Column reducers', () => {
         const firstColumn = { title: 'first column', cards: [] };
 
         beforeEach(() => {
-            const firstBoard = { title: 'first board', columns: [ firstColumn ] };
-            prevState = Immutable({
-                boards: [ firstBoard ],
-                activeBoard: 0
-            });
+            prevState = initState.setIn(['boards', 0, 'columns'], [firstColumn]);
         });
 
         it('updates its title', () => {
@@ -93,11 +81,7 @@ describe('Column reducers', () => {
         const firstColumn = { title: 'first column', cards: [] };
 
         beforeEach(() => {
-            const firstBoard = { title: 'first board', columns: [ firstColumn ] };
-            prevState = Immutable({
-                boards: [ firstBoard ],
-                activeBoard: 0
-            });
+            prevState = initState.setIn(['boards', 0, 'columns'], [firstColumn]);
         });
 
         it('removes it from the list of columns', () => {

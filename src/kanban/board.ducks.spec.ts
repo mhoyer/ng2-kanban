@@ -4,29 +4,26 @@ import {boardDucks} from './board.ducks';
 import {KanbanState} from '../types';
 
 let prevState: KanbanState;
-const boardReducer = createReducer(boardDucks, prevState);
+const initState: KanbanState = Immutable({
+    boards: [],
+    activeBoard: -1
+});
+const boardReducer = createReducer(boardDucks, initState);
 
 describe('Board reducers', () => {
     describe('Creating an initial first board', () => {
         const newBoard = { title: 'new Board', columns: [] };
         const createAction = boardDucks.create({newBoard});
 
-        beforeEach(() => {
-            prevState = Immutable({
-                boards: [],
-                activeBoard: -1
-            });
-        });
-
         it('adds board to list', () => {
-            const nextState = boardReducer(prevState, createAction);
+            const nextState = boardReducer(initState, createAction);
 
             expect(nextState.boards.length).toBe(1);
             expect(nextState.boards[0].title).toBe('new Board');
         });
 
         it('activates new board', () => {
-            const nextState = boardReducer(prevState, createAction);
+            const nextState = boardReducer(initState, createAction);
             expect(nextState.activeBoard).toBe(0);
         });
     });
@@ -37,10 +34,9 @@ describe('Board reducers', () => {
         const createAction = boardDucks.create({newBoard});
 
         beforeEach(() => {
-            prevState = Immutable({
-                boards: [firstBoard],
-                activeBoard: 0
-            });
+            prevState = initState
+                .set('boards', [firstBoard])
+                .set('activeBoard', 0);
         });
 
         it('adds board to the end of the list', () => {
@@ -61,10 +57,9 @@ describe('Board reducers', () => {
         const secondBoard = { title: 'second', columns: [] };
 
         beforeEach(() => {
-            prevState = Immutable({
-                boards: [firstBoard, secondBoard],
-                activeBoard: 0
-            });
+            prevState = initState
+                .set('boards', [firstBoard, secondBoard])
+                .set('activeBoard', 0);
         });
 
         describe('w/o providing a board id', () => {
@@ -107,10 +102,9 @@ describe('Board reducers', () => {
         const secondBoard = { title: 'second', columns: [] };
 
         beforeEach(() => {
-            prevState = Immutable({
-                boards: [firstBoard, secondBoard],
-                activeBoard: 0
-            });
+            prevState = initState
+                .set('boards', [firstBoard, secondBoard])
+                .set('activeBoard', 0);
         });
 
         it('sets the chosen one active', () => {
@@ -132,10 +126,9 @@ describe('Board reducers', () => {
         const thirdBoard = { title: 'third', columns: [] };
 
         beforeEach(() => {
-            prevState = Immutable({
-                boards: [firstBoard, secondBoard, thirdBoard],
-                activeBoard: 0
-            });
+            prevState = initState
+                .set('boards', [firstBoard, secondBoard, thirdBoard])
+                .set('activeBoard', 0);
         });
 
         describe('with specified board id', () => {
@@ -183,7 +176,7 @@ describe('Board reducers', () => {
             });
 
             it('activates the next board', () => {
-                prevState = prevState.set('activeBoard', 1);
+                prevState = initState.set('activeBoard', 1);
                 const deleteAction = boardDucks.delete();
 
                 const nextState = boardReducer(prevState, deleteAction);
@@ -201,12 +194,12 @@ describe('Board reducers', () => {
     });
 
     describe('Deleting the last remaining board', () => {
+        const lastBoard = { title: 'last', columns: [] };
+
         beforeEach(() => {
-            const lastBoard = { title: 'last', columns: [] };
-            prevState = Immutable({
-                boards: [lastBoard],
-                activeBoard: 0
-            });
+            prevState = initState
+                .set('boards', [lastBoard])
+                .set('activeBoard', 0);
         });
 
         it('clears the list of boards', () => {
