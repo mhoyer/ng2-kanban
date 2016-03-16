@@ -3,6 +3,7 @@ import {KanbanState, Board} from '../types';
 
 export const boardDucks = {
     create: createDuck('board/CREATE', createBoardReducer),
+    delete: createDuck('board/DELETE', deleteBoardReducer),
     rename: createDuck('board/RENAME', renameBoardReducer),
     select: createDuck('board/SELECT', selectBoardReducer),
 };
@@ -10,6 +11,23 @@ export const boardDucks = {
 export function createBoardReducer(state: KanbanState, payload: {newBoard: Board}): KanbanState {
     const activeBoard = state.boards.length;
     const boards = state.boards.concat(payload.newBoard);
+
+    return state
+        .set('boards', boards)
+        .set('activeBoard', activeBoard);
+}
+
+export function deleteBoardReducer(state: KanbanState, boardId?: number): KanbanState {
+    if (boardId === undefined) {
+        boardId = state.activeBoard;
+    }
+
+    if (boardId < 0 || boardId >= state.boards.length) {
+        return state;
+    }
+
+    const boards = state.boards.filter((b, i) => boardId !== i);
+    const activeBoard = Math.min(state.activeBoard, boards.length - 1);
 
     return state
         .set('boards', boards)

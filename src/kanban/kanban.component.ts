@@ -11,6 +11,7 @@ import KanbanActions from './kanban.duck';
         <ul>
             <li *ngFor="#board of state.boards; #id = index">
                 <a href="#" (click)="selectBoard(id)">{{board.title}}</a>
+                <button (click)="deleteBoard(id)">Delete Board</button>
             </li>
         </ul>
         <div *ngIf="selectedBoard">
@@ -18,6 +19,7 @@ import KanbanActions from './kanban.duck';
             <input [value]="selectedBoard.title" #boardTitleEditor />
             <button (click)="renameBoard(boardTitleEditor.value)">Rename</button>
             <button (click)="createColumn()">Create Column</button>
+            <button (click)="deleteBoard()">Delete Board</button>
             <ul>
                 <li *ngFor="#column of selectedBoard.columns">
                     {{column.title}}
@@ -51,6 +53,10 @@ export default class KanbanComponent {
             title: `${this.selectedBoard.columns.length + 1}. Column`
         };
         this.kanbanActions.column.create({boardId, newColumn});
+    }
+
+    deleteBoard(boardId?) {
+        this.kanbanActions.board.delete(boardId);
     }
 
     renameBoard(title) {

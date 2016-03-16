@@ -67,13 +67,7 @@ describe('Board reducers', () => {
             });
         });
 
-        it('does not change when board id is out of range', () => {
-            const renameAction = boardDucks.rename({boardId: 3, title: 'updated'});
-            const nextState = boardReducer(prevState, renameAction);
-            expect(nextState).toBe(prevState);
-        });
-
-        describe('w/o providing an id', () => {
+        describe('w/o providing a board id', () => {
             it('sets the new title of the currently active board', () => {
                 const renameAction = boardDucks.rename({title: 'updated'});
                 const nextState = boardReducer(prevState, renameAction);
@@ -87,7 +81,13 @@ describe('Board reducers', () => {
             });
         });
 
-        describe('with spcified id', () => {
+        describe('with specified board id', () => {
+            it('does not change when board id is out of range', () => {
+                const renameAction = boardDucks.rename({boardId: 3, title: 'updated'});
+                const nextState = boardReducer(prevState, renameAction);
+                expect(nextState).toBe(prevState);
+            });
+
             it('sets the new title of that one', () => {
                 const renameAction = boardDucks.rename({boardId: 1, title: 'updated'});
                 const nextState = boardReducer(prevState, renameAction);
@@ -119,10 +119,106 @@ describe('Board reducers', () => {
             expect(nextState.activeBoard).toBe(1);
         });
 
-        it('does not change when out of range', () => {
+        it('does not change when board id is out of range', () => {
             const selectAction = boardDucks.select(3);
             const nextState = boardReducer(prevState, selectAction);
             expect(nextState.activeBoard).toBe(0);
+        });
+    });
+
+    describe('Deleting a board', () => {
+        const firstBoard = { title: 'first', columns: [] };
+        const secondBoard = { title: 'second', columns: [] };
+        const thirdBoard = { title: 'third', columns: [] };
+
+        beforeEach(() => {
+            prevState = Immutable({
+                boards: [firstBoard, secondBoard, thirdBoard],
+                activeBoard: 0
+            });
+        });
+
+        describe('with specified board id', () => {
+            it('does not remove anything when board id is out of range', () => {
+                const deleteAction = boardDucks.delete(3);
+                const nextState = boardReducer(prevState, deleteAction);
+                expect(nextState).toBe(prevState);
+            });
+
+            it('removes it from the list', () => {
+                const deleteAction = boardDucks.delete(0);
+                const nextState = boardReducer(prevState, deleteAction);
+
+                expect(nextState.boards.length).toBe(2);
+                expect(nextState.boards).not.toContain(firstBoard);
+                expect(nextState.boards).toContain(secondBoard);
+                expect(nextState.boards).toContain(thirdBoard);
+            });
+
+            it('keeps the active state in case one to the right was deleted', () => {
+                const deleteAction = boardDucks.delete(1);
+                const nextState = boardReducer(prevState, deleteAction);
+                expect(nextState.activeBoard).toBe(0);
+            });
+
+            it('updates the active state in case one to the left was deleted', () => {
+                prevState = prevState.set('activeBoard', 2);
+                const deleteAction = boardDucks.delete(0);
+
+                const nextState = boardReducer(prevState, deleteAction);
+
+                expect(nextState.activeBoard).toBe(1);
+            });
+        });
+
+        describe('w/o providing a board id', () => {
+            it('removes the the active one', () => {
+                const deleteAction = boardDucks.delete();
+
+                const nextState = boardReducer(prevState, deleteAction);
+                expect(nextState.boards.length).toBe(2);
+                expect(nextState.boards).not.toContain(firstBoard);
+                expect(nextState.boards).toContain(secondBoard);
+                expect(nextState.boards).toContain(thirdBoard);
+            });
+
+            it('activates the next board', () => {
+                prevState = prevState.set('activeBoard', 1);
+                const deleteAction = boardDucks.delete();
+
+                const nextState = boardReducer(prevState, deleteAction);
+                expect(nextState.activeBoard).toBe(1);
+            });
+
+            it('activates the previous board in case the last one was active', () => {
+                prevState = prevState.set('activeBoard', 2);
+                const deleteAction = boardDucks.delete();
+
+                const nextState = boardReducer(prevState, deleteAction);
+                expect(nextState.activeBoard).toBe(1);
+            });
+        });
+    });
+
+    describe('Deleting the last remaining board', () => {
+        beforeEach(() => {
+            const lastBoard = { title: 'last', columns: [] };
+            prevState = Immutable({
+                boards: [lastBoard],
+                activeBoard: 0
+            });
+        });
+
+        it('clears the list of boards', () => {
+            const deleteAction = boardDucks.delete(0);
+            const nextState = boardReducer(prevState, deleteAction);
+            expect(nextState.boards.length).toBe(0);
+        });
+
+        it('sets "no" active board', () => {
+            const deleteAction = boardDucks.delete(0);
+            const nextState = boardReducer(prevState, deleteAction);
+            expect(nextState.activeBoard).toBe(-1);
         });
     });
 });
