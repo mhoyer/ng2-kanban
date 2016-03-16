@@ -3,10 +3,12 @@ import {createDuck, createReducer, createDispatchedActions} from 'redux-typed-du
 import {KanbanState, Board, Column} from '../types';
 import {boardDucks} from './board.ducks';
 import {columnDucks} from './column.ducks';
+import {cardDucks} from './card.ducks';
 
 export default class KanbanActions {
     board = boardDucks;
     column = columnDucks;
+    card = cardDucks;
 }
 
 const kanbanActions = new KanbanActions();
