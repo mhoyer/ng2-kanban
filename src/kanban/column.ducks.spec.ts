@@ -8,7 +8,7 @@ const columnReducer = createReducer(columnDucks, prevState);
 
 describe('Column reducers', () => {
     describe('Creating an initial first column', () => {
-        const newColumn = { title: 'new Column' };
+        const newColumn = { title: 'new Column', cards: [] };
 
         beforeEach(() => {
             prevState = Immutable({
@@ -36,8 +36,8 @@ describe('Column reducers', () => {
     });
 
     describe('Creating a second column', () => {
-        const firstColumn = { title: 'first column' };
-        const newColumn = { title: 'second column' };
+        const firstColumn = { title: 'first column', cards: [] };
+        const newColumn = { title: 'second column', cards: [] };
 
         beforeEach(() => {
             const firstBoard = { title: 'first board', columns: [ firstColumn ] };
@@ -57,7 +57,7 @@ describe('Column reducers', () => {
     });
 
     describe('Renaming a column', () => {
-        const firstColumn = { title: 'first column' };
+        const firstColumn = { title: 'first column', cards: [] };
 
         beforeEach(() => {
             const firstBoard = { title: 'first board', columns: [ firstColumn ] };
@@ -90,7 +90,7 @@ describe('Column reducers', () => {
     });
 
     describe('Deleting a column', () => {
-        const firstColumn = { title: 'first column' };
+        const firstColumn = { title: 'first column', cards: [] };
 
         beforeEach(() => {
             const firstBoard = { title: 'first board', columns: [ firstColumn ] };

@@ -53,7 +53,8 @@ export default class KanbanComponent {
     createColumn() {
         const boardId = this.state.activeBoard;
         const newColumn = {
-            title: `${this.selectedBoard.columns.length + 1}. Column`
+            title: `${this.selectedBoard.columns.length + 1}. Column`,
+            cards: []
         };
         this.kanbanActions.column.create({boardId, newColumn});
     }

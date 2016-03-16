@@ -10,4 +10,10 @@ export interface Board {
 
 export interface Column {
     title: string;
+    cards: Card[];
+}
+
+export interface Card {
+    title?: string;
+    description?: string;
 }
