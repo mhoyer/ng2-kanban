@@ -1,9 +1,9 @@
 import {createDuck, createReducer, createDispatchedActions} from 'redux-typed-ducks';
-import {KanbanState, Board} from '../types';
+import {KanbanState, Board, Column} from '../types';
+import {boardDucks} from './board.ducks';
 
 export default class KanbanActions {
-    createBoard = createDuck('kanban/CREATE_BOARD', createBoardReducer);
-    selectBoard = createDuck('kanban/SELECT_BOARD', selectBoardReducer);
+    board = boardDucks;
 }
 
 const kanbanActions = new KanbanActions();
@@ -12,20 +12,4 @@ const initialKanban = {
     activeBoard: -1
 };
 export const kanbanReducer = createReducer(kanbanActions, initialKanban);
-export const kanbanDispatchedActionsCreator = store => createDispatchedActions(kanbanActions, store);
-
-export function createBoardReducer(state: KanbanState, payload: {newBoard: Board}): KanbanState {
-    const boards = state.boards.concat(payload.newBoard);
-    const activeBoard = boards.length - 1;
-
-    return Object.assign({}, state, {boards, activeBoard});
-}
-
-export function selectBoardReducer(state: KanbanState, boardId: number): KanbanState {
-    const activeBoard = boardId;
-    if (activeBoard >= state.boards.length) {
-        return state;
-    }
-
-    return Object.assign({}, state, {activeBoard});
-}
+export const kanbanDispatchedActionsFactory = store => createDispatchedActions(kanbanActions, store);

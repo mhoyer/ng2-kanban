@@ -14,14 +14,22 @@
 
     <script>
       System.config({
+        map: {
+            '@ngrx/store': 'node_modules/@ngrx/store/dist',
+            'redux-typed-ducks': 'node_modules/redux-typed-ducks/dist/index.js',
+        },
         packages: {        
           'dist': {
             format: 'register',
             defaultExtension: 'js'
-          }
+          },
+          '@ngrx/store': {
+            main: 'index.js',
+            format: 'cjs'
+          },
         }
       });
-      System.import('dist/index')
+      System.import('dist/src/index')
             .then(null, console.error.bind(console));
     </script>
   </head>
