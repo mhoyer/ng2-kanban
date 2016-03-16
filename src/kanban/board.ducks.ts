@@ -8,7 +8,7 @@ export const boardDucks = {
     select: createDuck('board/SELECT', selectBoardReducer),
 };
 
-export function createBoardReducer(state: KanbanState, payload: {newBoard: Board}): KanbanState {
+export function createBoardReducer(state: KanbanState, payload: { newBoard: Board }): KanbanState {
     const activeBoard = state.boards.length;
     const boards = state.boards.concat(payload.newBoard);
 

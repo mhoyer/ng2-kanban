@@ -57,7 +57,7 @@ export default class KanbanComponent {
 
     createBoard() {
         const newBoard = { title: `${this.state.boards.length + 1}. Board`, columns: [] };
-        this.kanbanActions.board.create({newBoard});
+        this.kanbanActions.board.create({ newBoard });
     }
 
     selectBoard(boardId) {
@@ -79,17 +79,17 @@ export default class KanbanComponent {
             title: `${this.selectedBoard.columns.length + 1}. Column`,
             cards: []
         };
-        this.kanbanActions.column.create({boardId, newColumn});
+        this.kanbanActions.column.create({ boardId, newColumn });
     }
 
     renameColumn(columnId, title) {
         const boardId = this.state.activeBoard;
-        this.kanbanActions.column.rename({boardId, columnId, title});
+        this.kanbanActions.column.rename({ boardId, columnId, title });
     }
 
     deleteColumn(columnId) {
         const boardId = this.state.activeBoard;
-        this.kanbanActions.column.delete({boardId, columnId});
+        this.kanbanActions.column.delete({ boardId, columnId });
     }
 
     // card related
@@ -99,11 +99,11 @@ export default class KanbanComponent {
             title: `${10 + (Math.random() * 89 & 100)}`,
             description: `${100 + (Math.random() * 899 & 1000)}`
         };
-        this.kanbanActions.card.create({boardId, columnId, newCard});
+        this.kanbanActions.card.create({ boardId, columnId, newCard });
     }
 
     updateCard(columnId, cardId, title, description) {
         const boardId = this.state.activeBoard;
-        this.kanbanActions.card.update({boardId, columnId, cardId, title, description});
+        this.kanbanActions.card.update({ boardId, columnId, cardId, title, description });
     }
 }

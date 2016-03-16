@@ -21,7 +21,7 @@ describe('Card reducers', () => {
         const newCard = { title: 'new Card', description: 'new Card Description' };
 
         it('adds card to the list', () => {
-            const createAction = cardDucks.create({boardId: 0, columnId: 0, newCard});
+            const createAction = cardDucks.create({ boardId: 0, columnId: 0, newCard });
             const nextState = cardReducer(initState, createAction);
             const nextCards = nextState.boards[0].columns[0].cards;
 
@@ -31,14 +31,14 @@ describe('Card reducers', () => {
         });
 
         it('keeps the previous state when board id is out of range', () => {
-            const createAction = cardDucks.create({boardId: 1, columnId: 0, newCard});
+            const createAction = cardDucks.create({ boardId: 1, columnId: 0, newCard });
             const nextState = cardReducer(initState, createAction);
 
             expect(nextState).toBe(initState);
         });
 
         it('keeps the previous state when column id is out of range', () => {
-            const createAction = cardDucks.create({boardId: 0, columnId: 1, newCard});
+            const createAction = cardDucks.create({ boardId: 0, columnId: 1, newCard });
             const nextState = cardReducer(initState, createAction);
 
             expect(nextState).toBe(initState);
@@ -46,13 +46,13 @@ describe('Card reducers', () => {
     });
 
     describe('Creating a second card', () => {
-        const firstCard = {title: 'first'};
-        const newCard = {title: 'new Card'};
+        const firstCard = { title: 'first' };
+        const newCard = { title: 'new Card' };
 
         it('adds card to the end of the list', () => {
             prevState = initState.setIn(['boards', 0, 'columns', 0, 'cards'], [firstCard]);
 
-            const createAction = cardDucks.create({boardId: 0, columnId: 0, newCard});
+            const createAction = cardDucks.create({ boardId: 0, columnId: 0, newCard });
             const nextState = cardReducer(prevState, createAction);
             const nextCards = nextState.boards[0].columns[0].cards;
 

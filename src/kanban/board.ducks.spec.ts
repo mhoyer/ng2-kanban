@@ -13,7 +13,7 @@ const boardReducer = createReducer(boardDucks, initState);
 describe('Board reducers', () => {
     describe('Creating an initial first board', () => {
         const newBoard = { title: 'new Board', columns: [] };
-        const createAction = boardDucks.create({newBoard});
+        const createAction = boardDucks.create({ newBoard });
 
         it('adds board to list', () => {
             const nextState = boardReducer(initState, createAction);
@@ -31,7 +31,7 @@ describe('Board reducers', () => {
     describe('Creating a second board', () => {
         const firstBoard = { title: 'first', columns: [] };
         const newBoard = { title: 'second', columns: [] };
-        const createAction = boardDucks.create({newBoard});
+        const createAction = boardDucks.create({ newBoard });
 
         beforeEach(() => {
             prevState = initState
@@ -64,13 +64,13 @@ describe('Board reducers', () => {
 
         describe('w/o providing a board id', () => {
             it('sets the new title of the currently active board', () => {
-                const renameAction = boardDucks.rename({title: 'updated'});
+                const renameAction = boardDucks.rename({ title: 'updated' });
                 const nextState = boardReducer(prevState, renameAction);
                 expect(nextState.boards[0].title).toBe('updated');
             });
 
             it('keeps the title of the other board(s)', () => {
-                const renameAction = boardDucks.rename({title: 'updated'});
+                const renameAction = boardDucks.rename({ title: 'updated' });
                 const nextState = boardReducer(prevState, renameAction);
                 expect(nextState.boards[1].title).toBe('second');
             });
@@ -78,19 +78,19 @@ describe('Board reducers', () => {
 
         describe('with specified board id', () => {
             it('does not change when board id is out of range', () => {
-                const renameAction = boardDucks.rename({boardId: 3, title: 'updated'});
+                const renameAction = boardDucks.rename({ boardId: 3, title: 'updated' });
                 const nextState = boardReducer(prevState, renameAction);
                 expect(nextState).toBe(prevState);
             });
 
             it('sets the new title of that one', () => {
-                const renameAction = boardDucks.rename({boardId: 1, title: 'updated'});
+                const renameAction = boardDucks.rename({ boardId: 1, title: 'updated' });
                 const nextState = boardReducer(prevState, renameAction);
                 expect(nextState.boards[1].title).toBe('updated');
             });
 
             it('keeps the title of the other board(s)', () => {
-                const renameAction = boardDucks.rename({boardId: 1, title: 'updated'});
+                const renameAction = boardDucks.rename({ boardId: 1, title: 'updated' });
                 const nextState = boardReducer(prevState, renameAction);
                 expect(nextState.boards[0].title).toBe('first');
             });

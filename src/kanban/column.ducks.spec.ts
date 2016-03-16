@@ -18,7 +18,7 @@ describe('Column reducers', () => {
         const newColumn = { title: 'new Column', cards: [] };
 
         it('adds column to list', () => {
-            const createAction = columnDucks.create({boardId: 0, newColumn});
+            const createAction = columnDucks.create({ boardId: 0, newColumn });
             const nextState = columnReducer(initState, createAction);
 
             expect(nextState.boards[0].columns.length).toBe(1);
@@ -26,7 +26,7 @@ describe('Column reducers', () => {
         });
 
         it('keeps the previous state when board id is out of range', () => {
-            const createAction = columnDucks.create({boardId: 1, newColumn});
+            const createAction = columnDucks.create({ boardId: 1, newColumn });
             const nextState = columnReducer(initState, createAction);
 
             expect(nextState).toBe(initState);
@@ -40,7 +40,7 @@ describe('Column reducers', () => {
         it('adds column to the end of the list', () => {
             prevState = initState.setIn(['boards', 0, 'columns'], [firstColumn]);
 
-            const createAction = columnDucks.create({boardId: 0, newColumn});
+            const createAction = columnDucks.create({ boardId: 0, newColumn });
             const nextState = columnReducer(prevState, createAction);
 
             expect(nextState.boards[0].columns.length).toBe(2);
@@ -56,21 +56,21 @@ describe('Column reducers', () => {
         });
 
         it('updates its title', () => {
-            const renameAction = columnDucks.rename({boardId: 0, columnId: 0, title: 'updated'});
+            const renameAction = columnDucks.rename({ boardId: 0, columnId: 0, title: 'updated' });
             const nextState = columnReducer(prevState, renameAction);
 
             expect(nextState.boards[0].columns[0].title).toBe('updated');
         });
 
         it('keeps the previous state when column id is out of range', () => {
-            const renameAction = columnDucks.rename({boardId: 0, columnId: 3, title: 'updated'});
+            const renameAction = columnDucks.rename({ boardId: 0, columnId: 3, title: 'updated' });
             const nextState = columnReducer(prevState, renameAction);
 
             expect(nextState).toBe(prevState);
         });
 
         it('keeps the previous state when board id is out of range', () => {
-            const renameAction = columnDucks.rename({boardId: 1, columnId: 0, title: 'updated'});
+            const renameAction = columnDucks.rename({ boardId: 1, columnId: 0, title: 'updated' });
             const nextState = columnReducer(prevState, renameAction);
 
             expect(nextState).toBe(prevState);
@@ -85,21 +85,21 @@ describe('Column reducers', () => {
         });
 
         it('removes it from the list of columns', () => {
-            const deleteAction = columnDucks.delete({boardId: 0, columnId: 0});
+            const deleteAction = columnDucks.delete({ boardId: 0, columnId: 0 });
             const nextState = columnReducer(prevState, deleteAction);
 
             expect(nextState.boards[0].columns.length).toBe(0);
         });
 
         it('keeps the previous state when column id is out of range', () => {
-            const deleteAction = columnDucks.delete({boardId: 0, columnId: 3});
+            const deleteAction = columnDucks.delete({ boardId: 0, columnId: 3 });
             const nextState = columnReducer(prevState, deleteAction);
 
             expect(nextState).toBe(prevState);
         });
 
         it('keeps the previous state when board id is out of range', () => {
-            const deleteAction = columnDucks.delete({boardId: 1, columnId: 0});
+            const deleteAction = columnDucks.delete({ boardId: 1, columnId: 0 });
             const nextState = columnReducer(prevState, deleteAction);
 
             expect(nextState).toBe(prevState);
