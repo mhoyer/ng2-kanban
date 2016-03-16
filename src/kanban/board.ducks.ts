@@ -22,7 +22,7 @@ export function deleteBoardReducer(state: KanbanState, boardId?: number): Kanban
         boardId = state.activeBoard;
     }
 
-    if (boardId < 0 || boardId >= state.boards.length) {
+    if (state.boards[boardId] === undefined) {
         return state;
     }
 
@@ -37,11 +37,11 @@ export function deleteBoardReducer(state: KanbanState, boardId?: number): Kanban
 export function renameBoardReducer(state: KanbanState, payload: { title: string, boardId?: number }): KanbanState {
     const boardId = payload.boardId || state.activeBoard;
 
-    if (boardId >= 0 && boardId < state.boards.length) {
-        return state.setIn(['boards', boardId, 'title'], payload.title);
+    if (state.boards[boardId] === undefined) {
+        return state;
     }
 
-    return state;
+    return state.setIn(['boards', boardId, 'title'], payload.title);
 }
 
 export function selectBoardReducer(state: KanbanState, boardId: number): KanbanState {
