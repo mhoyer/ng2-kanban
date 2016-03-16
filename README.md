@@ -50,7 +50,7 @@ An attempt to create a slightly more complex application instead of a boring tod
 - title
 - description
 ##### Actions
-- update card (title, description)
+- √ update card (title, description)
 - delete card
 
 ## Possible extensions

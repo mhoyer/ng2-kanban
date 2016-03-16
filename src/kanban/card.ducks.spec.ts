@@ -60,4 +60,48 @@ describe('Card reducers', () => {
             expect(nextCards[1].title).toBe('new Card');
         });
     });
+
+    describe('Updating a card', () => {
+        const firstCard = { title: 'first', description: 'first description' };
+
+        beforeEach(() => {
+            prevState = initState.setIn(['boards', 0, 'columns', 0, 'cards'], [firstCard]);
+        });
+
+        it('sets new title', () => {
+            const updateAction = cardDucks.update({ boardId: 0, columnId: 0, cardId: 0, title: 'new title' });
+            const nextState = cardReducer(prevState, updateAction);
+            const nextCards = nextState.boards[0].columns[0].cards;
+
+            expect(nextCards.length).toBe(1);
+            expect(nextCards[0].title).toBe('new title');
+        });
+
+        it('sets new description', () => {
+            const updateAction = cardDucks.update({ boardId: 0, columnId: 0, cardId: 0, description: 'new description' });
+            const nextState = cardReducer(prevState, updateAction);
+            const nextCards = nextState.boards[0].columns[0].cards;
+
+            expect(nextCards.length).toBe(1);
+            expect(nextCards[0].description).toBe('new description');
+        });
+
+        it('keeps the previous state when boardId is out of range', () => {
+            const updateAction = cardDucks.update({ boardId: 99, columnId: 0, cardId: 0, title: 't', description: 'd' });
+            const nextState = cardReducer(prevState, updateAction);
+            expect(nextState).toBe(prevState);
+        });
+
+        it('keeps the previous state when columnId is out of range', () => {
+            const updateAction = cardDucks.update({ boardId: 0, columnId: 99, cardId: 0, title: 't', description: 'd' });
+            const nextState = cardReducer(prevState, updateAction);
+            expect(nextState).toBe(prevState);
+        });
+
+        it('keeps the previous state when cardId is out of range', () => {
+            const updateAction = cardDucks.update({ boardId: 0, columnId: 0, cardId: 99, title: 't', description: 'd' });
+            const nextState = cardReducer(prevState, updateAction);
+            expect(nextState).toBe(prevState);
+        });
+    });
 });

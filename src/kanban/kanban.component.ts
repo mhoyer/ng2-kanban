@@ -28,8 +28,11 @@ import KanbanActions from './kanban.duck';
                     <button (click)="deleteColumn(colId)">Delete Column</button> |
                     <button (click)="createCard(colId)">Create Card</button>
                     <ul>
-                        <li *ngFor="#card of column.cards">
+                        <li *ngFor="#card of column.cards; #cardId = index">
                             <b>{{card.title}}</b> - {{card.description}}
+                            <input [value]="card.title" #cardTitleEditor />
+                            <input [value]="card.description" #cardDescriptionEditor />
+                            <button (click)="updateCard(colId, cardId, cardTitleEditor.value, cardDescriptionEditor.value)">Update</button>
                         </li>
                     </ul>
                 </li>
@@ -97,5 +100,10 @@ export default class KanbanComponent {
             description: `${100 + (Math.random() * 899 & 1000)}`
         };
         this.kanbanActions.card.create({boardId, columnId, newCard});
+    }
+
+    updateCard(columnId, cardId, title, description) {
+        const boardId = this.state.activeBoard;
+        this.kanbanActions.card.update({boardId, columnId, cardId, title, description});
     }
 }
