@@ -9,7 +9,6 @@ const columnReducer = createReducer(columnDucks, prevState);
 describe('Column reducers', () => {
     describe('Creating an initial first column', () => {
         const newColumn = { title: 'new Column' };
-        const createAction = columnDucks.create({boardId: 0, newColumn});
 
         beforeEach(() => {
             prevState = Immutable({
@@ -21,17 +20,24 @@ describe('Column reducers', () => {
         });
 
         it('adds column to list', () => {
+            const createAction = columnDucks.create({boardId: 0, newColumn});
             const nextState = columnReducer(prevState, createAction);
 
             expect(nextState.boards[0].columns.length).toBe(1);
             expect(nextState.boards[0].columns[0].title).toBe('new Column');
+        });
+
+        it('keeps the previous state when board id is out of range', () => {
+            const createAction = columnDucks.create({boardId: 1, newColumn});
+            const nextState = columnReducer(prevState, createAction);
+
+            expect(nextState).toBe(prevState);
         });
     });
 
     describe('Creating a second column', () => {
         const firstColumn = { title: 'first column' };
         const newColumn = { title: 'second column' };
-        const createAction = columnDucks.create({boardId: 0, newColumn});
 
         beforeEach(() => {
             const firstBoard = { title: 'first board', columns: [ firstColumn ] };
@@ -42,6 +48,7 @@ describe('Column reducers', () => {
         });
 
         it('adds column to the end of the list', () => {
+            const createAction = columnDucks.create({boardId: 0, newColumn});
             const nextState = columnReducer(prevState, createAction);
 
             expect(nextState.boards[0].columns.length).toBe(2);

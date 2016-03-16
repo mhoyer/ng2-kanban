@@ -7,10 +7,14 @@ export const columnDucks = {
 };
 
 export function createColumnReducer(state: KanbanState, payload: { boardId: number, newColumn: Column }): KanbanState {
-    const board = state.boards[payload.boardId];
-    const columns = board.columns.concat(payload.newColumn);
+    const {boardId, newColumn} = payload;
+    const board = state.boards[boardId];
+    if (board === undefined) {
+        return state;
+    }
+    const columns = board.columns.concat(newColumn);
 
-    return state.setIn(['boards', payload.boardId, 'columns'], columns);
+    return state.setIn(['boards', boardId, 'columns'], columns);
 }
 
 export function deleteColumnReducer(state: KanbanState, payload: { boardId: number, columnId: number }) {
