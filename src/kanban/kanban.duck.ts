@@ -1,9 +1,11 @@
 import {createDuck, createReducer, createDispatchedActions} from 'redux-typed-ducks';
 import {KanbanState, Board, Column} from '../types';
 import {boardDucks} from './board.ducks';
+import {columnDucks} from './column.ducks';
 
 export default class KanbanActions {
     board = boardDucks;
+    column = columnDucks;
 }
 
 const kanbanActions = new KanbanActions();

@@ -13,7 +13,15 @@ import KanbanActions from './kanban.duck';
                 <a href="#" (click)="selectBoard(id)">{{board.title}}</a>
             </li>
         </ul>
-        <h3 *ngIf="selectedBoard">{{selectedBoard.title}}</h3>
+        <div *ngIf="selectedBoard">
+            <h3>{{selectedBoard.title}}</h3>
+            <button (click)="createColumn()">Create Column</button>
+            <ul>
+                <li *ngFor="#column of selectedBoard.columns">
+                    {{column.title}}
+                </li>
+            </ul>
+        </div>
         <hr /><pre>{{debugState}}</pre>`,
 })
 export default class KanbanComponent {
@@ -33,6 +41,14 @@ export default class KanbanComponent {
     createBoard() {
         const newBoard = { title: `${this.state.boards.length + 1}. Board`, columns: [] };
         this.kanbanActions.board.create({newBoard});
+    }
+
+    createColumn() {
+        const boardId = this.state.activeBoard;
+        const newColumn = {
+            title: `${this.selectedBoard.columns.length + 1}. Column`
+        };
+        this.kanbanActions.column.create({boardId, newColumn});
     }
 
     selectBoard(boardId) {
