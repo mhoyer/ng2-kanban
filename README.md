@@ -41,7 +41,7 @@ An attempt to create a slightly more complex application instead of a boring tod
 - list of cards
 ##### Actions
 - √ create card
-- move card
+- √ move card
 - √ update column (title)
 - √ delete column
 
@@ -51,7 +51,7 @@ An attempt to create a slightly more complex application instead of a boring tod
 - description
 ##### Actions
 - √ update card (title, description)
-- delete card
+- √ delete card
 
 ## Possible extensions
 
