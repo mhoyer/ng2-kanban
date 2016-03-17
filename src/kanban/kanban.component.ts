@@ -9,9 +9,9 @@ import KanbanActions from './kanban.duck';
     template: `<h1>Angular 2 - Kanban</h1>
         <button (click)="createBoard()">Create Board</button>
         <ul>
-            <li *ngFor="#board of state.boards; #id = index">
-                <a href="#" (click)="selectBoard(id)">{{board.title}}</a>
-                <button (click)="deleteBoard(id)">Delete Board</button>
+            <li *ngFor="#board of state.boards">
+                <a href="#" (click)="selectBoard(board.id)">{{board.title}}</a>
+                <button (click)="deleteBoard(board.id)">Delete Board</button>
             </li>
         </ul>
         <div *ngIf="selectedBoard">
@@ -52,15 +52,15 @@ export default class KanbanComponent {
 
     // board related
     get selectedBoard() {
-        return this.state.boards[this.state.activeBoard];
+        return this.state.boards.find(b => b.id === this.state.activeBoard);
     }
 
     createBoard() {
-        const newBoard = { title: `${this.state.boards.length + 1}. Board`, columns: [] };
-        this.kanbanActions.board.create({ newBoard });
+        const newBoard = { title: `${this.state.boards.length + 1}. Board` };
+        this.kanbanActions.board.create(newBoard);
     }
 
-    selectBoard(boardId) {
+    selectBoard(boardId: string) {
         this.kanbanActions.board.select(boardId);
     }
 
@@ -68,7 +68,7 @@ export default class KanbanComponent {
         this.kanbanActions.board.rename({ title });
     }
 
-    deleteBoard(boardId?) {
+    deleteBoard(boardId?: string) {
         this.kanbanActions.board.delete(boardId);
     }
 

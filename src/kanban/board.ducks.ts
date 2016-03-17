@@ -1,5 +1,6 @@
 import {createDuck} from 'redux-typed-ducks';
 import {KanbanState, Board} from '../types';
+import {generateGuid} from '../utils';
 
 export const boardDucks = {
     create: createDuck('board/CREATE', createBoardReducer),
@@ -8,46 +9,47 @@ export const boardDucks = {
     select: createDuck('board/SELECT', selectBoardReducer),
 };
 
-export function createBoardReducer(state: KanbanState, payload: { newBoard: Board }): KanbanState {
-    const activeBoard = state.boards.length;
-    const boards = state.boards.concat(payload.newBoard);
+export function createBoardReducer(state: KanbanState, newBoard: Board): KanbanState {
+    newBoard.id = newBoard.id || generateGuid();
+    const activeBoard = newBoard.id;
+    const boards = state.boards.concat(newBoard);
 
     return state
         .set('boards', boards)
         .set('activeBoard', activeBoard);
 }
 
-export function deleteBoardReducer(state: KanbanState, boardId?: number): KanbanState {
-    if (boardId === undefined) {
-        boardId = state.activeBoard;
-    }
-
-    if (state.boards[boardId] === undefined) {
+export function deleteBoardReducer(state: KanbanState, boardId?: string): KanbanState {
+    boardId = boardId || state.activeBoard;
+    const nextBoards = state.boards.filter(b => b.id !== boardId);
+    if (nextBoards.length === state.boards.length) {
         return state;
     }
 
-    const boards = state.boards.filter((b, i) => boardId !== i);
-    const activeBoard = Math.min(state.activeBoard, boards.length - 1);
+    if (boardId === state.activeBoard) {
+        const boardIndex = state.boards.findIndex(b => b.id === boardId);
+        const activeBoardIndex = Math.min(boardIndex, nextBoards.length - 1);
+        const nextActiveBoard = nextBoards[activeBoardIndex];
+        state = state.set('activeBoard', nextActiveBoard && nextActiveBoard.id);
+    }
 
-    return state
-        .set('boards', boards)
-        .set('activeBoard', activeBoard);
+    return state.set('boards', nextBoards);
 }
 
-export function renameBoardReducer(state: KanbanState, payload: { title: string, boardId?: number }): KanbanState {
+export function renameBoardReducer(state: KanbanState, payload: { title: string, boardId?: string }): KanbanState {
     const boardId = payload.boardId || state.activeBoard;
+    const boardIndex = state.boards.findIndex(b => b.id === boardId);
 
-    if (state.boards[boardId] === undefined) {
-        return state;
-    }
+    if (boardIndex < 0) return state;
 
-    return state.setIn(['boards', boardId, 'title'], payload.title);
+    return state.setIn(['boards', boardIndex, 'title'], payload.title);
 }
 
-export function selectBoardReducer(state: KanbanState, boardId: number): KanbanState {
+export function selectBoardReducer(state: KanbanState, boardId: string): KanbanState {
     const activeBoard = boardId;
-    if (activeBoard >= state.boards.length) {
-        return state;
-    }
+    const boardIndex = state.boards.findIndex(b => b.id === boardId);
+
+    if (boardIndex < 0) return state;
+
     return state.set('activeBoard', activeBoard);
 }
