@@ -1,6 +1,7 @@
 import {createDuck} from 'redux-typed-ducks';
 import {KanbanState, Board, Column} from '../types';
 import {generateGuid} from '../utils';
+import {deleteCardReducer} from './card.ducks';
 
 export const columnDucks = {
     create: createDuck('column/CREATE', createColumnReducer),
@@ -24,6 +25,13 @@ export function deleteColumnReducer(state: KanbanState, columnId: string | strin
     if (nextColumns.length === state.columns.length) {
         return state;
     }
+
+    // cascading delete of related cards
+    const cardIds = state.cards
+        .filter(c => columnIds.indexOf(c.columnId) >= 0)
+        .map(c => c.id);
+
+    state = deleteCardReducer(state, cardIds);
 
     return state.setIn(['columns'], nextColumns);
 }

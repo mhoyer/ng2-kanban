@@ -145,4 +145,29 @@ describe('Column reducers', () => {
             expect(nextState).toBe(prevState);
         });
     });
+
+    describe('Deleting a column that is referenced by cards', () => {
+        const col = { id: 'col', title: '' };
+        const relatedCard = { id: 'related', columnId: 'col', title: '' };
+        const unrelatedCard = { id: 'unrelated', columnId: 'any', title: '' };
+
+        beforeEach(() => {
+            prevState = initState
+                .set('columns', [col])
+                .set('cards', [relatedCard, unrelatedCard]);
+        });
+
+        it('removes the related cards', () => {
+            const deleteAction = columnDucks.delete('col');
+            const nextState = columnReducer(prevState, deleteAction);
+            expect(nextState.cards.length).toBe(1);
+            expect(nextState.cards).not.toContain(relatedCard);
+        });
+
+        it('keeps the unrelated cards', () => {
+            const deleteAction = columnDucks.delete('col');
+            const nextState = columnReducer(prevState, deleteAction);
+            expect(nextState.cards).toContain(unrelatedCard);
+        });
+    });
 });
