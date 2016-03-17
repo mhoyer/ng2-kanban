@@ -35,6 +35,7 @@ module.exports = function(config) {
         },
         
         autoWatch: false,
+        autoWatchBatchDelay: 500,
         browsers: [ 'Chrome' ],
         logLevel: config.LOG_WARN,
         singleRun: true
