@@ -87,16 +87,24 @@ describe('Column reducers', () => {
 
     describe('Deleting a column', () => {
         const firstColumn = { id: 'first', title: '' };
+        const secondColumn = { id: 'second', title: '' };
 
         beforeEach(() => {
-            prevState = initState.setIn(['columns'], [firstColumn]);
+            prevState = initState.setIn(['columns'], [firstColumn, secondColumn]);
         });
 
         it('removes it from the list of columns', () => {
             const deleteAction = columnDucks.delete('first');
             const nextState = columnReducer(prevState, deleteAction);
 
-            expect(nextState.columns.length).toBe(0);
+            expect(nextState.columns.length).toBe(1);
+        });
+
+        it('removes only matching one from the list of columns', () => {
+            const deleteAction = columnDucks.delete('first');
+            const nextState = columnReducer(prevState, deleteAction);
+
+            expect(nextState.columns).toContain(secondColumn);
         });
 
         it('keeps the previous state when column id is out of range', () => {
@@ -122,7 +130,7 @@ describe('Column reducers', () => {
             expect(nextState.columns.length).toBe(0);
         });
 
-        it('removes only matching ones the list of columns', () => {
+        it('removes only matching ones from the list of columns', () => {
             const deleteAction = columnDucks.delete(['any', 'second']);
             const nextState = columnReducer(prevState, deleteAction);
 

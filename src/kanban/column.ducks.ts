@@ -20,7 +20,7 @@ export function createColumnReducer(state: KanbanState, newColumn: Column): Kanb
 
 export function deleteColumnReducer(state: KanbanState, columnId: string | string[]) {
     const columnIds = [].concat(columnId);
-    const nextColumns = state.columns.filter(c => columnId.indexOf(c.id) < 0);
+    const nextColumns = state.columns.filter(c => columnIds.indexOf(c.id) < 0);
     if (nextColumns.length === state.columns.length) {
         return state;
     }

@@ -226,7 +226,7 @@ describe('Board reducers', () => {
         });
     });
 
-    describe('Deleting a board where columns are referencing to it', () => {
+    describe('Deleting a board that referenced by columns', () => {
         const board = { id: 'board', title: '' };
         const relatedColumn = { id: 'related', boardId: 'board', title: '' };
         const unrelatedColumn = { id: 'unrelated', boardId: 'any', title: '' };
@@ -245,7 +245,7 @@ describe('Board reducers', () => {
             expect(nextState.columns).not.toContain(relatedColumn);
         });
 
-        it('keeps the related columns', () => {
+        it('keeps the unrelated columns', () => {
             const deleteAction = boardDucks.delete('board');
             const nextState = boardReducer(prevState, deleteAction);
             expect(nextState.columns).toContain(unrelatedColumn);
