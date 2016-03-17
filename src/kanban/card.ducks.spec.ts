@@ -97,4 +97,20 @@ describe('Card reducers', () => {
             expect(nextState).toBe(prevState);
         });
     });
+
+    describe('Deleting a card', () => {
+        const firstCard = { id: 'first', columnId: 'any' };
+        const secondCard = { id: 'second', columnId: 'any' };
+
+        beforeEach(() => {
+            prevState = initState.set('cards', [firstCard, secondCard]);
+        });
+
+        it('removes it from the list of cards', () => {
+            const deleteAction = cardDucks.delete('first');
+            const nextState = cardReducer(prevState, deleteAction);
+            expect(nextState.cards.length).toBe(1);
+            expect(nextState.cards).not.toContain(firstCard);
+        });
+    });
 });

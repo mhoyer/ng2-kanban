@@ -4,6 +4,7 @@ import {generateGuid} from '../utils';
 
 export const cardDucks = {
     create: createDuck('card/CREATE', createCardReducer),
+    delete: createDuck('card/DELETE', deleteCardReducer),
     update: createDuck('card/UPDATE', updateCardReducer),
 };
 
@@ -39,4 +40,9 @@ export function updateCardReducer(state: KanbanState, payload: UpdateCardPayload
         .set('description', description === undefined ? card.description : description);
 
     return state.setIn(['cards', cardIndex], nextCard);
+}
+
+export function deleteCardReducer(state: KanbanState, cardId: string) {
+    const nextCards = state.cards.filter(c => c.id !== cardId);
+    return state.set('cards', nextCards);
 }
