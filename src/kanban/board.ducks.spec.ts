@@ -205,24 +205,50 @@ describe('Board reducers', () => {
     });
 
     describe('Deleting the last remaining board', () => {
-        const lastBoard = { id: '0', title: 'last' };
+        const lastBoard = { id: 'last', title: '' };
 
         beforeEach(() => {
             prevState = initState
                 .set('boards', [lastBoard])
-                .set('activeBoard', '0');
+                .set('activeBoard', 'last');
         });
 
         it('clears the list of boards', () => {
-            const deleteAction = boardDucks.delete('0');
+            const deleteAction = boardDucks.delete('last');
             const nextState = boardReducer(prevState, deleteAction);
             expect(nextState.boards.length).toBe(0);
         });
 
         it('sets "no" active board', () => {
-            const deleteAction = boardDucks.delete('0');
+            const deleteAction = boardDucks.delete('last');
             const nextState = boardReducer(prevState, deleteAction);
             expect(nextState.activeBoard).toBe(undefined);
+        });
+    });
+
+    describe('Deleting a board where columns are referencing to it', () => {
+        const board = { id: 'board', title: '' };
+        const relatedColumn = { id: 'related', boardId: 'board', title: '' };
+        const unrelatedColumn = { id: 'unrelated', boardId: 'any', title: '' };
+
+        beforeEach(() => {
+            prevState = initState
+                .set('boards', [board])
+                .set('columns', [relatedColumn, unrelatedColumn])
+                .set('activeBoard', '0');
+        });
+
+        it('removes the related columns', () => {
+            const deleteAction = boardDucks.delete('board');
+            const nextState = boardReducer(prevState, deleteAction);
+            expect(nextState.columns.length).toBe(1);
+            expect(nextState.columns).not.toContain(relatedColumn);
+        });
+
+        it('keeps the related columns', () => {
+            const deleteAction = boardDucks.delete('board');
+            const nextState = boardReducer(prevState, deleteAction);
+            expect(nextState.columns).toContain(unrelatedColumn);
         });
     });
 });

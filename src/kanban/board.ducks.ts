@@ -1,6 +1,7 @@
 import {createDuck} from 'redux-typed-ducks';
 import {KanbanState, Board} from '../types';
 import {generateGuid} from '../utils';
+import {deleteColumnReducer} from './column.ducks';
 
 export const boardDucks = {
     create: createDuck('board/CREATE', createBoardReducer),
@@ -26,12 +27,19 @@ export function deleteBoardReducer(state: KanbanState, boardId?: string): Kanban
         return state;
     }
 
+    // update active board state
     if (boardId === state.activeBoard) {
         const boardIndex = state.boards.findIndex(b => b.id === boardId);
         const activeBoardIndex = Math.min(boardIndex, nextBoards.length - 1);
         const nextActiveBoard = nextBoards[activeBoardIndex];
         state = state.set('activeBoard', nextActiveBoard && nextActiveBoard.id);
     }
+
+    // cascading delete of related columns
+    const columnIds = state.columns
+        .filter(c => c.boardId === boardId)
+        .map(c => c.id);
+    state = deleteColumnReducer(state, columnIds);
 
     return state.set('boards', nextBoards);
 }
