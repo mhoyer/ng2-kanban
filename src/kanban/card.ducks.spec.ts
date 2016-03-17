@@ -100,21 +100,50 @@ describe('Card reducers', () => {
 
     describe('Deleting a card', () => {
         const firstCard = { id: 'first', columnId: 'any' };
+
+        beforeEach(() => {
+            prevState = initState.set('cards', [firstCard]);
+        });
+
+        it('removes it from the list of cards', () => {
+            const deleteAction = cardDucks.delete('first');
+            const nextState = cardReducer(prevState, deleteAction);
+            expect(nextState.cards.length).toBe(0);
+        });
+
+        it('keeps the previous state when card id is out of range', () => {
+            const deleteAction = cardDucks.delete('any');
+            const nextState = cardReducer(prevState, deleteAction);
+
+            expect(nextState).toBe(prevState);
+        });
+    });
+
+    describe('Deleting multiple cards', () => {
+        const firstCard = { id: 'first', columnId: 'any' };
         const secondCard = { id: 'second', columnId: 'any' };
 
         beforeEach(() => {
             prevState = initState.set('cards', [firstCard, secondCard]);
         });
 
-        it('removes it from the list of cards', () => {
-            const deleteAction = cardDucks.delete('first');
+        it('removes all from the list of cards', () => {
+            const deleteAction = cardDucks.delete(['first', 'second']);
             const nextState = cardReducer(prevState, deleteAction);
-            expect(nextState.cards.length).toBe(1);
-            expect(nextState.cards).not.toContain(firstCard);
+
+            expect(nextState.cards.length).toBe(0);
         });
 
-        it('keeps the previous state when card id is out of range', () => {
-            const deleteAction = cardDucks.delete('any');
+        it('removes only matching ones the list of cards', () => {
+            const deleteAction = cardDucks.delete(['any', 'second']);
+            const nextState = cardReducer(prevState, deleteAction);
+
+            expect(nextState.cards.length).toBe(1);
+            expect(nextState.cards).toContain(firstCard);
+        });
+
+        it('keeps the previous state when column id is out of range', () => {
+            const deleteAction = cardDucks.delete(['any', 'unkown']);
             const nextState = cardReducer(prevState, deleteAction);
 
             expect(nextState).toBe(prevState);
