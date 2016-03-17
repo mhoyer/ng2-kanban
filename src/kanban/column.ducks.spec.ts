@@ -86,14 +86,14 @@ describe('Column reducers', () => {
     });
 
     describe('Deleting a column', () => {
-        const firstColumn = { id: '0', title: 'first column' };
+        const firstColumn = { id: 'first', title: '' };
 
         beforeEach(() => {
-            prevState = initState.setIn(['boards', 0, 'columns'], [firstColumn]);
+            prevState = initState.setIn(['columns'], [firstColumn]);
         });
 
         it('removes it from the list of columns', () => {
-            const deleteAction = columnDucks.delete('0');
+            const deleteAction = columnDucks.delete('first');
             const nextState = columnReducer(prevState, deleteAction);
 
             expect(nextState.columns.length).toBe(0);
@@ -101,6 +101,37 @@ describe('Column reducers', () => {
 
         it('keeps the previous state when column id is out of range', () => {
             const deleteAction = columnDucks.delete('any');
+            const nextState = columnReducer(prevState, deleteAction);
+
+            expect(nextState).toBe(prevState);
+        });
+    });
+
+    describe('Deleting multiple columns', () => {
+        const firstColumn = { id: 'first', title: '' };
+        const secondColumn = { id: 'second', title: '' };
+
+        beforeEach(() => {
+            prevState = initState.setIn(['columns'], [firstColumn, secondColumn]);
+        });
+
+        it('removes all from the list of columns', () => {
+            const deleteAction = columnDucks.delete(['first', 'second']);
+            const nextState = columnReducer(prevState, deleteAction);
+
+            expect(nextState.columns.length).toBe(0);
+        });
+
+        it('removes only matching ones the list of columns', () => {
+            const deleteAction = columnDucks.delete(['any', 'second']);
+            const nextState = columnReducer(prevState, deleteAction);
+
+            expect(nextState.columns.length).toBe(1);
+            expect(nextState.columns).toContain(firstColumn);
+        });
+
+        it('keeps the previous state when column id is out of range', () => {
+            const deleteAction = columnDucks.delete(['any', 'unkown']);
             const nextState = columnReducer(prevState, deleteAction);
 
             expect(nextState).toBe(prevState);
