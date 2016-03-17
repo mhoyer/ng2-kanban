@@ -5,40 +5,37 @@ import {KanbanState} from '../types';
 
 let prevState: KanbanState;
 const initState: KanbanState = Immutable({
-    boards: [{
-        title: '',
-        columns: [{
-            title: '',
-            cards: []
-        }]
-    }],
-    activeBoard: 0
+    boards: [{ id: 'first', title: ''}],
+    cards: [],
+    columns: [{ id: 'first', boardId: 'first', title: ''}],
+    activeBoard: 'first'
 });
 const cardReducer = createReducer(cardDucks, initState);
 
 describe('Card reducers', () => {
     describe('Creating an initial first card', () => {
-        const newCard = { title: 'new Card', description: 'new Card Description' };
+        const newCard = { columnId: 'first', title: 'new Card', description: 'new Card Description' };
 
         it('adds card to the list', () => {
-            const createAction = cardDucks.create({ boardId: 0, columnId: 0, newCard });
+            const createAction = cardDucks.create(newCard);
             const nextState = cardReducer(initState, createAction);
-            const nextCards = nextState.boards[0].columns[0].cards;
 
-            expect(nextCards.length).toBe(1);
-            expect(nextCards[0].title).toBe('new Card');
-            expect(nextCards[0].description).toBe('new Card Description');
+            expect(nextState.cards.length).toBe(1);
+            expect(nextState.cards[0].columnId).toBe('first');
+            expect(nextState.cards[0].title).toBe('new Card');
+            expect(nextState.cards[0].description).toBe('new Card Description');
         });
 
-        it('keeps the previous state when board id is out of range', () => {
-            const createAction = cardDucks.create({ boardId: 1, columnId: 0, newCard });
+        it('generates a card id', () => {
+            const createAction = cardDucks.create(newCard);
             const nextState = cardReducer(initState, createAction);
 
-            expect(nextState).toBe(initState);
+            expect(nextState.cards[0].id.length).toBeGreaterThan(0);
         });
 
         it('keeps the previous state when column id is out of range', () => {
-            const createAction = cardDucks.create({ boardId: 0, columnId: 1, newCard });
+            const invalidCard = { columnId: 'invalid' };
+            const createAction = cardDucks.create(invalidCard);
             const nextState = cardReducer(initState, createAction);
 
             expect(nextState).toBe(initState);
@@ -46,60 +43,56 @@ describe('Card reducers', () => {
     });
 
     describe('Creating a second card', () => {
-        const firstCard = { title: 'first' };
-        const newCard = { title: 'new Card' };
+        const firstCard = { columnId: 'first', title: '' };
+        const newCard = { columnId: 'first', title: 'new Card' };
 
         it('adds card to the end of the list', () => {
-            prevState = initState.setIn(['boards', 0, 'columns', 0, 'cards'], [firstCard]);
+            prevState = initState.setIn(['cards'], [firstCard]);
 
-            const createAction = cardDucks.create({ boardId: 0, columnId: 0, newCard });
+            const createAction = cardDucks.create(newCard);
             const nextState = cardReducer(prevState, createAction);
-            const nextCards = nextState.boards[0].columns[0].cards;
 
-            expect(nextCards.length).toBe(2);
-            expect(nextCards[1].title).toBe('new Card');
+            expect(nextState.cards.length).toBe(2);
+            expect(nextState.cards[1].title).toBe('new Card');
         });
     });
 
     describe('Updating a card', () => {
-        const firstCard = { title: 'first', description: 'first description' };
+        const firstCard = { id: 'first', columnId: 'any', title: 'first', description: 'first description' };
 
         beforeEach(() => {
-            prevState = initState.setIn(['boards', 0, 'columns', 0, 'cards'], [firstCard]);
+            prevState = initState.set('cards', [firstCard]);
+        });
+
+        it('sets new column id', () => {
+            const updateAction = cardDucks.update({ cardId: 'first', columnId: 'first' });
+            const nextState = cardReducer(prevState, updateAction);
+
+            expect(nextState.cards[0].columnId).toBe('first');
         });
 
         it('sets new title', () => {
-            const updateAction = cardDucks.update({ boardId: 0, columnId: 0, cardId: 0, title: 'new title' });
+            const updateAction = cardDucks.update({ cardId: 'first', title: 'new title' });
             const nextState = cardReducer(prevState, updateAction);
-            const nextCards = nextState.boards[0].columns[0].cards;
 
-            expect(nextCards.length).toBe(1);
-            expect(nextCards[0].title).toBe('new title');
+            expect(nextState.cards[0].title).toBe('new title');
         });
 
         it('sets new description', () => {
-            const updateAction = cardDucks.update({ boardId: 0, columnId: 0, cardId: 0, description: 'new description' });
+            const updateAction = cardDucks.update({ cardId: 'first', description: 'new description' });
             const nextState = cardReducer(prevState, updateAction);
-            const nextCards = nextState.boards[0].columns[0].cards;
 
-            expect(nextCards.length).toBe(1);
-            expect(nextCards[0].description).toBe('new description');
+            expect(nextState.cards[0].description).toBe('new description');
         });
 
-        it('keeps the previous state when boardId is out of range', () => {
-            const updateAction = cardDucks.update({ boardId: 99, columnId: 0, cardId: 0, title: 't', description: 'd' });
+        it('keeps the previous state when column id is out of range', () => {
+            const updateAction = cardDucks.update({ cardId: 'first', columnId: 'invalid' });
             const nextState = cardReducer(prevState, updateAction);
             expect(nextState).toBe(prevState);
         });
 
-        it('keeps the previous state when columnId is out of range', () => {
-            const updateAction = cardDucks.update({ boardId: 0, columnId: 99, cardId: 0, title: 't', description: 'd' });
-            const nextState = cardReducer(prevState, updateAction);
-            expect(nextState).toBe(prevState);
-        });
-
-        it('keeps the previous state when cardId is out of range', () => {
-            const updateAction = cardDucks.update({ boardId: 0, columnId: 0, cardId: 99, title: 't', description: 'd' });
+        it('keeps the previous state when card id is out of range', () => {
+            const updateAction = cardDucks.update({ cardId: 'invalid', title: '' });
             const nextState = cardReducer(prevState, updateAction);
             expect(nextState).toBe(prevState);
         });

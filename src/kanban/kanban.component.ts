@@ -28,11 +28,11 @@ import KanbanActions from './kanban.duck';
                     <button (click)="deleteColumn(column.id)">Delete Column</button> |
                     <button (click)="createCard(column.id)">Create Card</button>
                     <ul>
-                        <li *ngFor="#card of column.cards; #cardId = index">
+                        <li *ngFor="#card of cards(column.id)">
                             <b>{{card.title}}</b> - {{card.description}}
                             <input [value]="card.title" #cardTitleEditor />
                             <input [value]="card.description" #cardDescriptionEditor />
-                            <button (click)="updateCard(colId, cardId, cardTitleEditor.value, cardDescriptionEditor.value)">Update</button>
+                            <button (click)="updateCard(card.id, cardTitleEditor.value, cardDescriptionEditor.value)">Update</button>
                         </li>
                     </ul>
                 </li>
@@ -95,17 +95,20 @@ export default class KanbanComponent {
     }
 
     // card related
+    cards(columnId) {
+        return this.state.cards.filter(c => c.columnId === columnId);
+    };
+
     createCard(columnId) {
-        const boardId = this.state.activeBoard;
         const newCard = {
+            columnId,
             title: `${10 + (Math.random() * 89 & 100)}`,
             description: `${100 + (Math.random() * 899 & 1000)}`
         };
-        this.kanbanActions.card.create({ boardId, columnId, newCard });
+        this.kanbanActions.card.create(newCard);
     }
 
-    updateCard(columnId, cardId, title, description) {
-        const boardId = this.state.activeBoard;
-        this.kanbanActions.card.update({ boardId, columnId, cardId, title, description });
+    updateCard(cardId, title, description) {
+        this.kanbanActions.card.update({ cardId, title, description });
     }
 }

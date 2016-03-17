@@ -1,57 +1,42 @@
 import {createDuck} from 'redux-typed-ducks';
 import {KanbanState, Board, Column, Card} from '../types';
+import {generateGuid} from '../utils';
 
 export const cardDucks = {
     create: createDuck('card/CREATE', createCardReducer),
     update: createDuck('card/UPDATE', updateCardReducer),
 };
 
-export function createCardReducer(state: KanbanState, payload: { boardId: number, columnId: number, newCard: Card }): KanbanState {
-    const {boardId, columnId, newCard} = payload;
-
-    const board = state.boards[boardId];
-    if (board === undefined) {
+export function createCardReducer(state: KanbanState, newCard: Card): KanbanState {
+    newCard.id = newCard.id || generateGuid();
+    if (!state.columns.find(c => c.id === newCard.columnId)) {
         return state;
     }
 
-    const column = board.columns[columnId];
-    if (column === undefined) {
-        return state;
-    }
-
-    const cards = column.cards.concat(newCard);
-
-    return state.setIn(['boards', boardId, 'columns', columnId, 'cards'], cards);
+    const cards = state.cards.concat(newCard);
+    return state.setIn(['cards'], cards);
 }
 
 type UpdateCardPayload = {
-    boardId: number,
-    columnId: number,
-    cardId: number,
+    cardId: string,
+    columnId?: string,
     title?: string,
     description?: string
 };
 export function updateCardReducer(state: KanbanState, payload: UpdateCardPayload): KanbanState {
-    const {boardId, columnId, cardId, title, description} = payload;
+    const {cardId, columnId, title, description} = payload;
+    const cardIndex = state.cards.findIndex(c => c.id === cardId);
+    const card = state.cards[cardIndex];
 
-    const board = state.boards[boardId];
-    if (board === undefined) {
+    if (card === undefined) return state;
+    if (columnId !== undefined && !state.columns.find(c => c.id === columnId)) {
         return state;
     }
 
-    const column = board.columns[columnId];
-    if (column === undefined) {
-        return state;
-    }
-
-    const card = column.cards[cardId]
-    if (card === undefined) {
-        return state;
-    }
-
-    const updatedCard = (card as any)
+    const nextCard = (card as any)
+        .set('columnId', columnId === undefined ? card.columnId : columnId)
         .set('title', title === undefined ? card.title : title)
         .set('description', description === undefined ? card.description : description);
 
-    return state.setIn(['boards', boardId, 'columns', columnId, 'cards', cardId], updatedCard);
+    return state.setIn(['cards', cardIndex], nextCard);
 }
