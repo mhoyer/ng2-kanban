@@ -112,5 +112,12 @@ describe('Card reducers', () => {
             expect(nextState.cards.length).toBe(1);
             expect(nextState.cards).not.toContain(firstCard);
         });
+
+        it('keeps the previous state when card id is out of range', () => {
+            const deleteAction = cardDucks.delete('any');
+            const nextState = cardReducer(prevState, deleteAction);
+
+            expect(nextState).toBe(prevState);
+        });
     });
 });

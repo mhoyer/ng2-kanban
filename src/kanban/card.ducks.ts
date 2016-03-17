@@ -44,5 +44,9 @@ export function updateCardReducer(state: KanbanState, payload: UpdateCardPayload
 
 export function deleteCardReducer(state: KanbanState, cardId: string) {
     const nextCards = state.cards.filter(c => c.id !== cardId);
+    if (nextCards.length === state.cards.length) {
+        return state;
+    }
+
     return state.set('cards', nextCards);
 }
