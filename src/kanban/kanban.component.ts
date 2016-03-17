@@ -21,12 +21,12 @@ import KanbanActions from './kanban.duck';
             <button (click)="deleteBoard()">Delete Board</button> |
             <button (click)="createColumn()">Create Column</button>
             <ul>
-                <li *ngFor="#column of selectedBoard.columns; #colId = index">
+                <li *ngFor="#column of columns">
                     {{column.title}}
                     <input [value]="column.title" #columnTitleEditor />
-                    <button (click)="renameColumn(colId, columnTitleEditor.value)">Rename</button>
-                    <button (click)="deleteColumn(colId)">Delete Column</button> |
-                    <button (click)="createCard(colId)">Create Card</button>
+                    <button (click)="renameColumn(column.id, columnTitleEditor.value)">Rename</button>
+                    <button (click)="deleteColumn(column.id)">Delete Column</button> |
+                    <button (click)="createCard(column.id)">Create Card</button>
                     <ul>
                         <li *ngFor="#card of column.cards; #cardId = index">
                             <b>{{card.title}}</b> - {{card.description}}
@@ -73,23 +73,25 @@ export default class KanbanComponent {
     }
 
     // column related
+    get columns() {
+        return this.state.columns.filter(c => c.boardId === this.state.activeBoard);
+    }
+
     createColumn() {
-        const boardId = this.state.activeBoard;
         const newColumn = {
-            title: `${this.selectedBoard.columns.length + 1}. Column`,
+            boardId: this.state.activeBoard,
+            title: `${this.state.columns.length + 1}. Column`,
             cards: []
         };
-        this.kanbanActions.column.create({ boardId, newColumn });
+        this.kanbanActions.column.create(newColumn);
     }
 
     renameColumn(columnId, title) {
-        const boardId = this.state.activeBoard;
-        this.kanbanActions.column.rename({ boardId, columnId, title });
+        this.kanbanActions.column.rename({ columnId, title });
     }
 
     deleteColumn(columnId) {
-        const boardId = this.state.activeBoard;
-        this.kanbanActions.column.delete({ boardId, columnId });
+        this.kanbanActions.column.delete(columnId);
     }
 
     // card related
