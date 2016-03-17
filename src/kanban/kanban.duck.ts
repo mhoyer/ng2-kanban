@@ -12,9 +12,10 @@ export default class KanbanActions {
 }
 
 const kanbanActions = new KanbanActions();
-const initialKanban = Immutable({
+const initialKanban: KanbanState = Immutable({
     boards: [],
-    activeBoard: -1
+    cards: [],
+    columns: []
 });
 export const kanbanReducer = createReducer(kanbanActions, initialKanban);
 export const kanbanDispatchedActionsFactory = store => createDispatchedActions(kanbanActions, store);

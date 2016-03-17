@@ -1,19 +1,24 @@
 export type KanbanState = Immutable<{
     boards: Board[];
-    activeBoard: number;
+    cards: Card[];
+    columns: Column[];
+    activeBoard?: string;
 }>;
 
 export interface Board {
+    id?: string;
     title: string;
-    columns: Column[];
 }
 
 export interface Column {
+    id?: string;
+    boardId: string;
     title: string;
-    cards: Card[];
 }
 
 export interface Card {
+    id?: string;
+    columnId: string;
     title?: string;
     description?: string;
 }
