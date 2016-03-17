@@ -33,6 +33,7 @@ import KanbanActions from './kanban.duck';
                             <input [value]="card.title" #cardTitleEditor />
                             <input [value]="card.description" #cardDescriptionEditor />
                             <button (click)="updateCard(card.id, cardTitleEditor.value, cardDescriptionEditor.value)">Update</button>
+                            <button (click)="deleteCard(card.id)">Delete</button>
                         </li>
                     </ul>
                 </li>
@@ -110,5 +111,9 @@ export default class KanbanComponent {
 
     updateCard(cardId, title, description) {
         this.kanbanActions.card.update({ cardId, title, description });
+    }
+
+    deleteCard(cardId) {
+        this.kanbanActions.card.delete(cardId);
     }
 }
