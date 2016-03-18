@@ -1,16 +1,19 @@
 <html>
   <head>
     <title>Angular 2 Kanban</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script src="node_modules/es6-shim/es6-shim.min.js"></script>
     <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
-    <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>   
+    <script src="node_modules/angular2/es6/dev/src/testing/shims_for_IE.js"></script>
 
     <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
     <script src="node_modules/systemjs/dist/system.src.js"></script>
     <script src="node_modules/rxjs/bundles/Rx.js"></script>
     <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
 
     <script>
       System.config({
@@ -19,7 +22,7 @@
             'redux-typed-ducks': 'node_modules/redux-typed-ducks/dist/index.js',
             'seamless-immutable': 'node_modules/seamless-immutable/seamless-immutable.development.js',
         },
-        packages: {        
+        packages: {
           'dist': {
             format: 'register',
             defaultExtension: 'js'
