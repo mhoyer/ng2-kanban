@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy, Input} from 'angular2/core';
 import {Store} from '@ngrx/store';
 import {KanbanState, Board} from '../types';
-import KanbanActions from '../kanban/kanban.duck';
+import KanbanActions from '../kanban/kanban.ducks';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,

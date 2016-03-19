@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 import {KanbanState} from '../types';
 import SidebarComponent from '../components/sidebar.component';
 import BoardComponent from '../components/board.component';
-import KanbanActions from './kanban.duck';
+import KanbanActions from '../kanban/kanban.ducks';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
