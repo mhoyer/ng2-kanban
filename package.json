@@ -1,6 +1,7 @@
 {
   "name": "ng2-kanban",
   "version": "0.1.0",
+  "description": "An attempt to create a slightly more complex application instead of a boring todo list.",
   "scripts": {
     "start": "concurrently \"npm run watch\" \"npm run lite\" ",
     "watch": "concurrently \"npm run watch:build\" \"karma start --auto-watch --no-single-run\"",
