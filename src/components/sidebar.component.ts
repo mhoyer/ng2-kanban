@@ -2,10 +2,12 @@ import {Component, ChangeDetectionStrategy, Input} from 'angular2/core';
 import {Store} from '@ngrx/store';
 import {KanbanState, Board} from '../types';
 import KanbanActions from '../kanban/kanban.ducks';
+import CreatorComponent from './creator.component';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'sidebar',
+    directives: [CreatorComponent],
     template: `
         <header>
             <svg version="1.1" viewBox="0 0 500 500">
@@ -19,7 +21,9 @@ import KanbanActions from '../kanban/kanban.ducks';
             </svg>
             <h1>Kanban</h1>
         </header>
-        <button (click)="createBoard()">Create Board</button>
+        
+        <creator (create)="createBoard($event)" placeholder="Title of new board"></creator>
+
         <ul>
             <li *ngFor="#board of boards">
                 <a href="#" (click)="selectBoard(board.id)">{{board.title}}</a>
@@ -32,8 +36,8 @@ export default class SidebarComponent {
 
     constructor(private kanbanActions: KanbanActions) { }
 
-    createBoard() {
-        const newBoard = { title: `${this.boards.length + 1}. Board` };
+    createBoard(title) {
+        const newBoard = { title };
         this.kanbanActions.board.create(newBoard);
     }
 
