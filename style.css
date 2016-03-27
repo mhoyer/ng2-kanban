@@ -28,9 +28,9 @@ sidebar header { display: flex; }
 sidebar header h1 { flex-grow: 1; margin-bottom: 1rem; }
 sidebar header button { margin-top: 1rem; }
 
-sidebar board-creator input { flex-grow: 1; margin-right: 0.3em; }
-sidebar board-creator { display: none; }
-sidebar.show-menu board-creator { display: flex; }
+sidebar .board-creator input { flex-grow: 1; margin-right: 0.3em; }
+sidebar .board-creator { display: none; }
+sidebar.show-menu .board-creator { display: flex; }
 sidebar board-selector { display: none; }
 sidebar.show-menu board-selector { display: block; }
 
@@ -84,7 +84,7 @@ card p {
 
 @media only screen and (min-width: 550px) {
     sidebar header h1 { margin-top: 0; }
-    sidebar board-creator { display: flex; }
+    sidebar .board-creator { display: flex; }
     
     board header button { margin-top: 1rem; }
     board column-creator { display: flex; }

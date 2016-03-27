@@ -12,7 +12,7 @@ import CreatorComponent from './creator.component';
     directives: [KanbanHeaderComponent, CreatorComponent, BoardSelectorComponent],
     template: `
         <kanban-header></kanban-header>
-        <creator (create)="createBoard($event)" placeholder="Title of new board"></creator>
+        <creator (create)="createBoard($event)" class="board-creator" placeholder="Board title"></creator>
         <board-selector [boards]="boards" 
                         [activeBoard]="activeBoard"
                         (select)="selectBoard($event)">
