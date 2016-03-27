@@ -3,25 +3,25 @@ import {Store} from '@ngrx/store';
 import {KanbanState, Board} from '../types';
 import KanbanActions from '../kanban/kanban.ducks';
 import KanbanHeaderComponent from './kanbanHeader.component';
+import BoardSelectorComponent from './boardSelector.component';
 import CreatorComponent from './creator.component';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'sidebar',
-    directives: [KanbanHeaderComponent, CreatorComponent],
+    directives: [KanbanHeaderComponent, CreatorComponent, BoardSelectorComponent],
     template: `
         <kanban-header></kanban-header>
         <creator (create)="createBoard($event)" placeholder="Title of new board"></creator>
-
-        <ul>
-            <li *ngFor="#board of boards">
-                <a href="#" (click)="selectBoard(board.id)">{{board.title}}</a>
-                <button (click)="deleteBoard(board.id)">Delete Board</button>
-            </li>
-        </ul>`,
+        <board-selector [boards]="boards" 
+                        [activeBoard]="activeBoard"
+                        (select)="selectBoard($event)">
+        </board-selector>
+    `,
 })
 export default class SidebarComponent {
     @Input() boards: Board[];
+    @Input() activeBoard: string;
 
     constructor(private kanbanActions: KanbanActions) { }
 
@@ -32,9 +32,5 @@ export default class SidebarComponent {
 
     selectBoard(boardId: string) {
         this.kanbanActions.board.select(boardId);
-    }
-
-    deleteBoard(boardId?: string) {
-        this.kanbanActions.board.delete(boardId);
     }
 }

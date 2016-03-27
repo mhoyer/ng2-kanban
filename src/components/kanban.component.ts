@@ -10,7 +10,9 @@ import KanbanActions from '../kanban/kanban.ducks';
     selector: 'kanban',
     directives: [SidebarComponent, BoardComponent],
     template: `
-        <sidebar [boards]="state.boards"></sidebar>
+        <sidebar [boards]="state.boards" 
+                 [activeBoard]="state.activeBoard">
+        </sidebar>
         <board [board]="selectedBoard"></board>
         <hr /><pre>{{debugState}}</pre>`,
 })
