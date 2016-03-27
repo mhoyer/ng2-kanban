@@ -23,6 +23,7 @@ board header > * {
     margin-bottom: 0;
 }
 
+sidebar kanban-header { display: block; }
 sidebar header { display: flex; }
 sidebar header h1 { flex-grow: 1; margin-bottom: 1rem; }
 sidebar header button { margin-top: 1rem; }
