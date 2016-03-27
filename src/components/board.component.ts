@@ -37,7 +37,7 @@ export default class BoardComponent {
     @Input() board: Board;
 
     constructor(store: Store<KanbanState>, private kanbanActions: KanbanActions) {
-        store.subscribe(s => console.log('new Board state', this.state = s));
+        store.subscribe(s => this.state = s);
     }
 
     renameBoard(title) {
