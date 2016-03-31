@@ -3,7 +3,7 @@
 module.exports = function(config) {
     config.set({
         basePath: './',
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine', 'sinon'],
 
         files: [
             'node_modules/es6-shim/es6-shim.js',
@@ -14,7 +14,7 @@ module.exports = function(config) {
             {pattern: 'node_modules/rxjs/**/*.js', included: false, watched: false, served: true},
             {pattern: 'node_modules/redux-typed-ducks/dist/**/*.js', included: false, watched: false, served: true},
             {pattern: 'node_modules/seamless-immutable/*.js', included: false, watched: false, served: true},
-            
+
             { pattern: 'dist/**/*.js', included: false, watched: true },
             'karma.runner.js' // main entry point
         ],
@@ -33,7 +33,7 @@ module.exports = function(config) {
                 { type: 'text-summary' }
             ]
         },
-        
+
         autoWatch: false,
         autoWatchBatchDelay: 500,
         browsers: [ 'Chrome' ],
