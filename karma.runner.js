@@ -5,6 +5,7 @@ __karma__.loaded = () => {}; // Cancel Karma's synchronous start, we will call `
 System.config({
     map: {
         // karma always hosts under '/base'
+        '@ngrx/store': 'base/node_modules/@ngrx/store/dist',
         'redux-typed-ducks': 'base/node_modules/redux-typed-ducks/dist/index.js',
         'seamless-immutable': 'base/node_modules/seamless-immutable/seamless-immutable.development.js',
     },
@@ -13,7 +14,11 @@ System.config({
             format: 'register',
             defaultExtension: 'js',
             map: { 'base': '.' }
-        }
+        },
+        '@ngrx/store': {
+            main: 'index.js',
+            format: 'cjs'
+        },
     }
 });
 

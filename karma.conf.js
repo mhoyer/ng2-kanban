@@ -16,6 +16,7 @@ module.exports = function(config) {
             { pattern: 'node_modules/angular2/bundles/router.dev.js', included: true, watched: false },
             { pattern: 'node_modules/angular2/bundles/testing.dev.js', included: true, watched: false },
 
+            { pattern: 'node_modules/@ngrx/store/dist/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/redux-typed-ducks/dist/**/*.js', included: false, watched: false },
             { pattern: 'node_modules/seamless-immutable/*.js', included: false, watched: false },
 
