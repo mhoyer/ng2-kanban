@@ -2,16 +2,26 @@ import {Component, ChangeDetectionStrategy, Input} from 'angular2/core';
 import {Store} from '@ngrx/store';
 import {KanbanState, Board} from '../types';
 import KanbanActions from '../kanban/kanban.ducks';
+import CreatorComponent from './creator.component';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'board',
+    directives: [CreatorComponent],
     template: `<div *ngIf="board">
-        <h3>{{board.title}}</h3>
-        <input [value]="board.title" #boardTitleEditor />
-        <button (click)="renameBoard(boardTitleEditor.value)">Rename</button>
-        <button (click)="deleteBoard()">Delete Board</button> |
-        <button (click)="createColumn()">Create Column</button>
+        <header>
+            <h2>{{board.title}}</h2>
+            <button class="dropdown-button">▼</button>
+        </header>
+        <creator (create)="createColumn($event)"
+                 class="column-creator"
+                 placeholder="Title of new column">
+        </creator>
+        <board-operations>
+            <button>Rename Board</button>
+            <button (click)="deleteBoard()">Delete Board</button>
+        </board-operations>
+
         <ul>
             <li *ngFor="#column of columns">
                 {{column.title}}
@@ -53,10 +63,10 @@ export default class BoardComponent {
         return this.state.columns.filter(c => c.boardId === this.state.activeBoard);
     }
 
-    createColumn() {
+    createColumn(title: string) {
         const newColumn = {
             boardId: this.state.activeBoard,
-            title: `${this.state.columns.length + 1}. Column`,
+            title: title,
             cards: []
         };
         this.kanbanActions.column.create(newColumn);

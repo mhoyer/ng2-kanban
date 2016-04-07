@@ -39,9 +39,9 @@ board header h2 {
     flex-grow: 1;
 }
 
-board column-creator input { flex-grow: 1; margin-right: 0.3em; }
-board column-creator { display: none; }
-board.show-menu column-creator { display: flex; }
+board .column-creator input { flex-grow: 1; margin-right: 0.3em; }
+board .column-creator { display: none; }
+board.show-menu .column-creator { display: flex; }
 board board-operations { display: none; }
 board.show-menu board-operations { display: block; }
 
@@ -87,7 +87,7 @@ card p {
     sidebar .board-creator { display: flex; }
 
     board header button { margin-top: 1rem; }
-    board column-creator { display: flex; }
+    board .column-creator { display: flex; }
 }
 
 @media only screen and (min-width: 750px) {
