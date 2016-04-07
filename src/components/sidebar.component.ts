@@ -11,10 +11,15 @@ import CreatorComponent from './creator.component';
     selector: 'sidebar',
     directives: [KanbanHeaderComponent, CreatorComponent, BoardSelectorComponent],
     template: `
-        <kanban-header></kanban-header>
-        <creator (create)="createBoard($event)" class="board-creator" placeholder="Board title"></creator>
-        <board-selector [boards]="boards" 
+        <kanban-header (menuButtonClicked)="toggleExpandedState()"></kanban-header>
+        <creator (create)="createBoard($event)"
+                 class="board-creator"
+                 [ngClass]="{expanded: isExpanded}"
+                 placeholder="Board title">
+        </creator>
+        <board-selector [boards]="boards"
                         [activeBoard]="activeBoard"
+                        [ngClass]="{expanded: isExpanded}"
                         (select)="selectBoard($event)">
         </board-selector>
     `,
@@ -22,6 +27,7 @@ import CreatorComponent from './creator.component';
 export default class SidebarComponent {
     @Input() boards: Board[];
     @Input() activeBoard: string;
+    isExpanded = false;
 
     constructor(private kanbanActions: KanbanActions) { }
 
@@ -32,5 +38,9 @@ export default class SidebarComponent {
 
     selectBoard(boardId: string) {
         this.kanbanActions.board.select(boardId);
+    }
+
+    toggleExpandedState() {
+        this.isExpanded = !this.isExpanded;
     }
 }

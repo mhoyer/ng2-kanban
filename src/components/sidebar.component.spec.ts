@@ -44,4 +44,16 @@ describe('SidebarComponent', () => {
             sinon.assert.calledWith(boardSelectSpy, 'any board');
         });
     });
+
+    describe('Expanded state', () => {
+        it('is set to collapsed initially', () => {
+            expect(sut.isExpanded).toBeFalsy();
+        });
+
+        it('inverts to expanded mode when toggling', () => {
+            sut.toggleExpandedState();
+
+            expect(sut.isExpanded).toBeTruthy();
+        });
+    });
 });

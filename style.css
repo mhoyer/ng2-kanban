@@ -30,9 +30,9 @@ sidebar header button { margin-top: 1rem; }
 
 sidebar .board-creator input { flex-grow: 1; margin-right: 0.3em; }
 sidebar .board-creator { display: none; }
-sidebar.show-menu .board-creator { display: flex; }
+sidebar .board-creator.expanded { display: flex; }
 sidebar board-selector { display: none; }
-sidebar.show-menu board-selector { display: block; }
+sidebar board-selector.expanded { display: block; }
 
 board header { display: flex; }
 board header h2 {
