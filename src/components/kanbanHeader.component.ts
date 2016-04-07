@@ -15,6 +15,9 @@ import {Component, ChangeDetectionStrategy} from 'angular2/core';
                 </g>
             </svg>
             <h1>Kanban</h1>
+            <button class="button-primary menu-button">
+                &#9776;
+            </button>
         </header>`,
 })
 export default class KanbanHeaderComponent { }

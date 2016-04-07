@@ -35,7 +35,7 @@ sidebar board-selector { display: none; }
 sidebar.show-menu board-selector { display: block; }
 
 board header { display: flex; }
-board header h2 { 
+board header h2 {
     flex-grow: 1;
 }
 
@@ -47,12 +47,12 @@ board.show-menu board-operations { display: block; }
 
 column-container { display: block; }
 column { display: block; }
-column h3 { 
+column h3 {
     margin-bottom: .5rem;
     font-size: 2.5rem
 }
 column .no-card-yet,
-card { 
+card {
     display: block;
     padding: .5rem 1rem;
     margin: 0 .2rem .5rem;
@@ -85,32 +85,32 @@ card p {
 @media only screen and (min-width: 550px) {
     sidebar header h1 { margin-top: 0; }
     sidebar .board-creator { display: flex; }
-    
+
     board header button { margin-top: 1rem; }
     board column-creator { display: flex; }
 }
 
 @media only screen and (min-width: 750px) {
     kanban { display: flex; }
-    
+
     sidebar {
         width: 18em;
         min-width: 18em;
     }
 
     sidebar board-selector { display: block; }
-    sidebar button#show-board-selector { display: none; }
+    sidebar button.menu-button { display: none; }
 
-    board { 
+    board {
         width: calc(100% - 18em);
         overflow-x: auto;
     }
-    
+
     column-container {
         display: flex;
     }
-    column { 
-        min-width: 30rem; 
+    column {
+        min-width: 30rem;
         max-width: 30rem;
     }
 }
@@ -120,21 +120,21 @@ card p {
         width: 26em;
         min-width: 26em;
     }
-    
-    board { 
+
+    board {
         width: calc(100% - 26em);
     }
 
-    column { 
-        min-width: 40rem; 
-        max-width: 40rem; 
+    column {
+        min-width: 40rem;
+        max-width: 40rem;
     }
 }
 /* look */
 input { min-width: 50px; }
 
 /* ellipsing header titles */
-board header h2, 
+board header h2,
 column h3,
 card h4 {
     white-space: nowrap;
