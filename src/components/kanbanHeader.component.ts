@@ -1,4 +1,5 @@
-import {Component, ChangeDetectionStrategy} from 'angular2/core';
+import {Component, ChangeDetectionStrategy, EventEmitter, Output} from 'angular2/core';
+import KanbanActions from '../kanban/kanban.ducks';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,9 +16,12 @@ import {Component, ChangeDetectionStrategy} from 'angular2/core';
                 </g>
             </svg>
             <h1>Kanban</h1>
-            <button class="button-primary menu-button">
+            <button class="button-primary menu-button"
+                    (click)="menuButtonClicked.emit()">
                 &#9776;
             </button>
         </header>`,
 })
-export default class KanbanHeaderComponent { }
+export default class KanbanHeaderComponent {
+    @Output() menuButtonClicked = new EventEmitter();
+}
