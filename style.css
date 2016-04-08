@@ -34,6 +34,7 @@ sidebar .board-creator.expanded { display: flex; }
 sidebar board-selector { display: none; }
 sidebar board-selector.expanded { display: block; }
 
+board board-header { display: block; }
 board header { display: flex; }
 board header h2 {
     flex-grow: 1;

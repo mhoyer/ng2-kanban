@@ -2,17 +2,17 @@ import {Component, ChangeDetectionStrategy, Input} from 'angular2/core';
 import {Store} from '@ngrx/store';
 import {KanbanState, Board} from '../types';
 import KanbanActions from '../kanban/kanban.ducks';
+import BoardHeaderComponent from './boardHeader.component';
 import CreatorComponent from './creator.component';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'board',
-    directives: [CreatorComponent],
+    directives: [BoardHeaderComponent, CreatorComponent],
     template: `<div *ngIf="board">
-        <header>
-            <h2>{{board.title}}</h2>
-            <button class="dropdown-button">▼</button>
-        </header>
+        <board-header [title]="board.title"
+                      (menuButtonClicked)="toggleBoardOptions()">
+        </board-header>
         <creator (create)="createColumn($event)"
                  class="column-creator"
                  placeholder="Title of new column">
@@ -49,6 +49,8 @@ export default class BoardComponent {
     constructor(store: Store<KanbanState>, private kanbanActions: KanbanActions) {
         store.subscribe(s => this.state = s);
     }
+
+    toggleBoardOptions() { }
 
     renameBoard(title) {
         this.kanbanActions.board.rename({ title });
