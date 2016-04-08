@@ -3,11 +3,12 @@ import {Component, ChangeDetectionStrategy, EventEmitter, Input, Output} from 'a
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'creator',
-    template: `     
-        <input #input type="text" 
+    template: `
+        <input #input type="text"
                [placeholder]="placeholder"
-               [value]="value">
-        <button class="button-primary" (click)="doCreate($event, input)">
+               [value]="value"
+               (keydown)="inputKeyDown($event)">
+        <button class="button-primary" (click)="createButtonClick($event, input)">
             Create
         </button>`,
 })
@@ -16,9 +17,17 @@ export default class CreatorComponent {
     @Input() value: string = '';
     @Output() create = new EventEmitter<string>();
 
-    doCreate(event: MouseEvent, input: HTMLInputElement) {
+    createButtonClick(event: MouseEvent, input: HTMLInputElement) {
         event.preventDefault();
+        this.doCreate(input);
+    }
 
+    inputKeyDown(event: KeyboardEvent) {
+        if (event.keyCode !== 13) return;
+        this.doCreate(event.target as HTMLInputElement);
+    }
+
+    doCreate(input: HTMLInputElement) {
         if (input.value && input.value.trim()) {
             this.create.emit(input.value);
             input.value = '';
