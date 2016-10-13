@@ -2,12 +2,12 @@ import CreatorComponent from './creator.component';
 
 describe('CreatorComponent', () => {
     let sut: CreatorComponent;
-    let createEmitSpy: Sinon.SinonSpy;
+    let createEmitSpy: jasmine.Spy;
     let fakeInputElement: HTMLInputElement;
 
     beforeEach(() => {
         sut = new CreatorComponent();
-        createEmitSpy = sinon.spy(sut.create, 'emit');
+        createEmitSpy = spyOn(sut.create, 'emit');
         fakeInputElement = {} as HTMLInputElement;
     });
 
@@ -20,53 +20,58 @@ describe('CreatorComponent', () => {
     });
 
     describe('create button clicked', () => {
-        let doCreateSpy: Sinon.SinonSpy;
+        let doCreateSpy: jasmine.Spy;
 
         beforeEach(() => {
-            doCreateSpy = sinon.spy(sut, 'doCreate');
+            doCreateSpy = spyOn(sut, 'doCreate');
         });
 
         it('prevents default event handling', () => {
-            const fakeEvent = { preventDefault: sinon.spy() } as any;
+            const fakeEvent = { preventDefault: jasmine.createSpy('preventDefault') } as any;
             sut.createButtonClick(fakeEvent, fakeInputElement);
 
-            expect(fakeEvent.preventDefault.called).toBeTruthy();
+            expect(fakeEvent.preventDefault).toHaveBeenCalled();
         });
 
         it('triggers actual doCreate', () => {
-            const fakeEvent = { preventDefault: sinon.spy() } as any;
+            const fakeEvent = { preventDefault: jasmine.createSpy('preventDefault') } as any;
             sut.createButtonClick(fakeEvent, fakeInputElement);
 
-            expect(doCreateSpy.calledWith(fakeInputElement)).toBeTruthy();
+            expect(doCreateSpy).toHaveBeenCalledWith(fakeInputElement);
         });
     });
 
+    interface KeyboardEventMock extends KeyboardEvent {
+        keyCode: number;
+        target: EventTarget;
+    }
+
     describe('key pressed in input field', () => {
-        let doCreateSpy: Sinon.SinonSpy;
-        let fakeEvent = { keyCode: 13 } as KeyboardEvent;
+        let doCreateSpy: jasmine.Spy;
+        let fakeEvent = { keyCode: 13 } as KeyboardEventMock;
 
         beforeEach(() => {
-            doCreateSpy = sinon.stub(sut, 'doCreate');
+            doCreateSpy = spyOn(sut, 'doCreate');
         });
 
         it('triggers actual doCreate once', () => {
             sut.inputKeyDown(fakeEvent);
 
-            expect(doCreateSpy.calledOnce).toBeTruthy();
+            expect(doCreateSpy).toHaveBeenCalledTimes(1);
         });
 
         it('triggers actual doCreate with current input element', () => {
             fakeEvent.target = fakeInputElement;
             sut.inputKeyDown(fakeEvent);
 
-            expect(doCreateSpy.calledWith(fakeInputElement)).toBeTruthy();
+            expect(doCreateSpy).toHaveBeenCalledWith(fakeInputElement);
         });
 
         it('does nothing when pressed key is not Enter', () => {
             fakeEvent.keyCode = 42;
             sut.inputKeyDown(fakeEvent);
 
-            expect(doCreateSpy.called).toBeFalsy();
+            expect(doCreateSpy).not.toHaveBeenCalled();
         });
     });
 
@@ -74,28 +79,28 @@ describe('CreatorComponent', () => {
         it('does not emit create event when input value is undefined/empty', () => {
             sut.doCreate(fakeInputElement);
 
-            expect(createEmitSpy.called).toBeFalsy();
+            expect(createEmitSpy).not.toHaveBeenCalled();
         });
 
         it('does not emit create event when input value is only whitespaces', () => {
             fakeInputElement.value = '   ';
             sut.doCreate(fakeInputElement);
 
-            expect(createEmitSpy.called).toBeFalsy();
+            expect(createEmitSpy).not.toHaveBeenCalled();
         });
 
         it('emits create event with the input value', () => {
             fakeInputElement.value = 'any value';
             sut.doCreate(fakeInputElement);
 
-            expect(createEmitSpy.calledWith('any value')).toBeTruthy();
+            expect(createEmitSpy).toHaveBeenCalledWith('any value');
         });
 
         it('clears the input value after create event', () => {
             fakeInputElement.value = 'any value';
             sut.doCreate(fakeInputElement);
 
-            expect(createEmitSpy.called).toBeTruthy();
+            expect(createEmitSpy).toHaveBeenCalledTimes(1);
             expect(fakeInputElement.value).toBe('');
         });
     });

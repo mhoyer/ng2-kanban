@@ -1,5 +1,5 @@
-import {Component, ChangeDetectionStrategy, EventEmitter, Input, Output} from 'angular2/core';
-import {Board} from '../types.ts';
+import {Component, ChangeDetectionStrategy, EventEmitter, Input, Output} from '@angular/core';
+import {Board} from '../types';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -7,7 +7,7 @@ import {Board} from '../types.ts';
     template: `
         <nav>
             <a href="#" class="button button-primary u-full-width"
-               *ngFor="#board of boards"
+               *ngFor="let board of boards"
                [ngClass]="cssActive(board.id)"
                (click)="selectBoard(board.id)">
                {{board.title}}

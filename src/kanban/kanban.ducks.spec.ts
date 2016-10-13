@@ -37,16 +37,16 @@ describe('Kanban reducers', () => {
 
 describe('Factory to dispatch Kanban actions', () => {
     it('generates auto-dispatching action invokers bound to given store', () => {
-        const fakeStore = { dispatch: sinon.spy() };
+        const fakeStore = { dispatch: jasmine.createSpy('dispatch') };
         const sut = kanbanDispatchedActionsFactory(fakeStore);
 
         sut.board.select('any board id');
 
-        expect(fakeStore.dispatch.calledWith({ type: 'board/SELECT', payload: 'any board id' })).toBeTruthy();
+        expect(fakeStore.dispatch).toHaveBeenCalledWith({ type: 'board/SELECT', payload: 'any board id' });
     });
 
     it('generates action invokers that return concrete action when invoked', () => {
-        const fakeStore = { dispatch: sinon.spy() };
+        const fakeStore = { dispatch: jasmine.createSpy('dispatch') };
         const sut = kanbanDispatchedActionsFactory(fakeStore);
 
         const action = sut.board.select('any board id');

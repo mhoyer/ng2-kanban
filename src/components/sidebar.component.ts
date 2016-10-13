@@ -1,15 +1,11 @@
-import {Component, ChangeDetectionStrategy, Input} from 'angular2/core';
+import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {KanbanState, Board} from '../types';
 import KanbanActions from '../kanban/kanban.ducks';
-import KanbanHeaderComponent from './kanbanHeader.component';
-import BoardSelectorComponent from './boardSelector.component';
-import CreatorComponent from './creator.component';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'sidebar',
-    directives: [KanbanHeaderComponent, CreatorComponent, BoardSelectorComponent],
     template: `
         <kanban-header (menuButtonClicked)="toggleExpandedState()"></kanban-header>
         <creator (create)="createBoard($event)"

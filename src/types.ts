@@ -1,4 +1,6 @@
-export type KanbanState = Immutable<{
+import * as si from 'seamless-immutable';
+
+export type KanbanState = si.Immutable<{
     boards: Board[];
     cards: Card[];
     columns: Column[];

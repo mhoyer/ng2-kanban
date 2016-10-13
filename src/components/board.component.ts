@@ -1,14 +1,11 @@
-import {Component, ChangeDetectionStrategy, Input} from 'angular2/core';
+import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {KanbanState, Board} from '../types';
 import KanbanActions from '../kanban/kanban.ducks';
-import BoardHeaderComponent from './boardHeader.component';
-import CreatorComponent from './creator.component';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'board',
-    directives: [BoardHeaderComponent, CreatorComponent],
     template: `<div *ngIf="board">
         <board-header [title]="board.title"
                       (menuButtonClicked)="toggleBoardOptions()">
@@ -17,20 +14,20 @@ import CreatorComponent from './creator.component';
                  class="column-creator"
                  placeholder="Title of new column">
         </creator>
-        <board-operations>
+        <div>
             <button>Rename Board</button>
             <button (click)="deleteBoard()">Delete Board</button>
-        </board-operations>
+        </div>
 
         <ul>
-            <li *ngFor="#column of columns">
+            <li *ngFor="let column of columns">
                 {{column.title}}
                 <input [value]="column.title" #columnTitleEditor />
                 <button (click)="renameColumn(column.id, columnTitleEditor.value)">Rename</button>
                 <button (click)="deleteColumn(column.id)">Delete Column</button> |
                 <button (click)="createCard(column.id)">Create Card</button>
                 <ul>
-                    <li *ngFor="#card of cards(column.id)">
+                    <li *ngFor="let card of cards(column.id)">
                         <b>{{card.title}}</b> - {{card.description}}
                         <input [value]="card.title" #cardTitleEditor />
                         <input [value]="card.description" #cardDescriptionEditor />

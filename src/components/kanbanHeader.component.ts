@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy, EventEmitter, Output} from 'angular2/core';
+import {Component, ChangeDetectionStrategy, EventEmitter, Output} from '@angular/core';
 import KanbanActions from '../kanban/kanban.ducks';
 
 @Component({

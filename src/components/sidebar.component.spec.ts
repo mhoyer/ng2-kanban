@@ -1,8 +1,8 @@
 import SidebarComponent from './sidebar.component';
 
 describe('SidebarComponent', () => {
-    const boardCreateSpy = sinon.spy();
-    const boardSelectSpy = sinon.spy();
+    const boardCreateSpy = jasmine.createSpy('boardCreateSpy');
+    const boardSelectSpy = jasmine.createSpy('boardSelectSpy');
     const fakeActions = {
         board: {
             create: boardCreateSpy,
@@ -12,8 +12,8 @@ describe('SidebarComponent', () => {
     let sut: SidebarComponent;
 
     beforeEach(() => {
-        boardCreateSpy.reset();
-        boardSelectSpy.reset();
+        boardCreateSpy.calls.reset();
+        boardSelectSpy.calls.reset();
         sut = new SidebarComponent(fakeActions);
     });
 
@@ -21,13 +21,13 @@ describe('SidebarComponent', () => {
         it('dispatches action once', () => {
             sut.createBoard('any title');
 
-            sinon.assert.calledOnce(boardCreateSpy);
+            expect(boardCreateSpy).toHaveBeenCalledTimes(1);
         });
 
         it('dispatches action with correct title', () => {
             sut.createBoard('any title');
 
-            sinon.assert.calledWith(boardCreateSpy, { title: 'any title' });
+            expect(boardCreateSpy).toHaveBeenCalledWith({ title: 'any title' });
         });
     });
 
@@ -35,13 +35,13 @@ describe('SidebarComponent', () => {
         it('dispatches action once', () => {
             sut.selectBoard('any board');
 
-            sinon.assert.calledOnce(boardSelectSpy);
+            expect(boardSelectSpy).toHaveBeenCalledTimes(1);
         });
 
         it('dispatches action with correct board id', () => {
             sut.selectBoard('any board');
 
-            sinon.assert.calledWith(boardSelectSpy, 'any board');
+            expect(boardSelectSpy).toHaveBeenCalledWith('any board');
         });
     });
 

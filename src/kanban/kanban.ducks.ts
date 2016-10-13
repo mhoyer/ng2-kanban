@@ -1,4 +1,4 @@
-import Immutable from 'seamless-immutable';
+import * as si from 'seamless-immutable';
 import {createDuck, createReducer, createDispatchedActions} from 'redux-typed-ducks';
 import {KanbanState, Board, Column} from '../types';
 import {boardDucks} from './board.ducks';
@@ -12,7 +12,7 @@ export default class KanbanActions {
 }
 
 const kanbanActions = new KanbanActions();
-const initialKanban: KanbanState = Immutable({
+const initialKanban: KanbanState = si.from({
     boards: [],
     cards: [],
     columns: []

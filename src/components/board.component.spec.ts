@@ -3,8 +3,8 @@ import {KanbanState} from '../types';
 import BoardComponent from './board.component';
 
 describe('BoardComponent', () => {
-    const storeSubscribeSpy = sinon.spy();
-    const columnCreateSpy = sinon.spy();
+    const storeSubscribeSpy = jasmine.createSpy('storeSubscribe');
+    const columnCreateSpy = jasmine.createSpy('columnCreate');
     const fakeStore = { subscribe: storeSubscribeSpy as any } as Store<KanbanState>;
     const fakeActions = {
         column: {
@@ -14,7 +14,7 @@ describe('BoardComponent', () => {
     let sut: BoardComponent;
 
     beforeEach(() => {
-        columnCreateSpy.reset();
+        columnCreateSpy.calls.reset();
         sut = new BoardComponent(fakeStore, fakeActions);
         sut.state = { } as KanbanState;
     });
@@ -23,14 +23,14 @@ describe('BoardComponent', () => {
         it('dispatches action once', () => {
             sut.createColumn('any title');
 
-            sinon.assert.calledOnce(columnCreateSpy);
+            expect(columnCreateSpy).toHaveBeenCalledTimes(1);
         });
 
         it('dispatches action with correct board id', () => {
             sut.state.activeBoard = 'any board';
             sut.createColumn('any title');
 
-            const createArg = columnCreateSpy.firstCall.args[0];
+            const createArg = columnCreateSpy.calls.first().args[0];
 
             expect(createArg.boardId).toBe('any board');
         });
@@ -38,7 +38,7 @@ describe('BoardComponent', () => {
         it('dispatches action with correct title', () => {
             sut.createColumn('any title');
 
-            const createArg = columnCreateSpy.firstCall.args[0];
+            const createArg = columnCreateSpy.calls.first().args[0];
 
             expect(createArg.title).toBe('any title');
         });
@@ -46,7 +46,7 @@ describe('BoardComponent', () => {
         it('dispatches action with empty cards', () => {
             sut.createColumn('any title');
 
-            const createArg = columnCreateSpy.firstCall.args[0];
+            const createArg = columnCreateSpy.calls.first().args[0];
 
             expect(createArg.cards.length).toBe(0);
         });
