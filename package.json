@@ -5,8 +5,7 @@
   "scripts": {
     "start": "webpack-dev-server --inline --progress --port 8080",
     "test": "karma start",
-    "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail",
-    "postinstall": "typings install"
+    "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail"
   },
   "license": "ISC",
   "dependencies": {
@@ -21,6 +20,9 @@
     "@angular/upgrade": "~2.1.1",
     "@ngrx/core": "^1.2.0",
     "@ngrx/store": "^2.2.1",
+    "@types/core-js": "^0.9.34",
+    "@types/jasmine": "^2.5.35",
+    "@types/node": "^6.0.45",
     "core-js": "^2.4.1",
     "normalize.css": "^5.0.0",
     "redux-typed-ducks": "^0.2.0",
@@ -53,7 +55,6 @@
     "ts-loader": "^0.9.5",
     "tslint": "^3.8.0",
     "typescript": "^2.0.3",
-    "typings": "^1.4.0",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1"
   }
