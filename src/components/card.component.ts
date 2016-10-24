@@ -8,7 +8,8 @@ import KanbanActions from '../kanban/kanban.ducks';
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'card',
     template: `
-        <b>{{card.title}}</b> - {{card.description}}
+        <h4>{{card.title}}</h4>
+        <p>{{card.description}}</p>
         <input [value]="card.title" #cardTitleEditor />
         <input [value]="card.description" #cardDescriptionEditor />
         <button (click)="updateCard(card.id, cardTitleEditor.value, cardDescriptionEditor.value)">Update</button>

@@ -18,7 +18,7 @@ import KanbanActions from '../kanban/kanban.ducks';
             <button>Rename Board</button>
             <button (click)="deleteBoard()">Delete Board</button>
         </div>
-        <div>
+        <div class="column-container">
             <column *ngFor="let column of columns; trackBy: trackByColumnId" [column]="column"></column>
         </div>
     </div>`,

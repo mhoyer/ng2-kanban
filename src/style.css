@@ -46,7 +46,7 @@ board.show-menu .column-creator { display: flex; }
 board board-operations { display: none; }
 board.show-menu board-operations { display: block; }
 
-column-container { display: block; }
+.column-container { display: block; }
 column { display: block; }
 column h3 {
     margin-bottom: .5rem;
@@ -107,7 +107,7 @@ card p {
         overflow-x: auto;
     }
 
-    column-container {
+    .column-container {
         display: flex;
     }
     column {
