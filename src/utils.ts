@@ -1,7 +1,7 @@
 // See: http://stackoverflow.com/a/2117523/385507
 export function generateGuid(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return 'xxxxxxxx'.replace(/x/g, function(c) {
+        const r = Math.random() * 16 | 0, v = r;
         return v.toString(16);
     });
 }
