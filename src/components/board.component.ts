@@ -38,8 +38,8 @@ export default class BoardComponent {
         this.kanbanActions.board.rename({ title });
     }
 
-    deleteBoard(boardId?: string) {
-        this.kanbanActions.board.delete(boardId);
+    deleteBoard() {
+        this.kanbanActions.board.delete();
     }
 
     // column related
