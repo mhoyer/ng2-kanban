@@ -10,13 +10,13 @@ import KanbanActions from '../kanban/kanban.ducks';
         <sidebar [boards]="state.boards"
                  [activeBoard]="state.activeBoard">
         </sidebar>
-        <board [board]="selectedBoard"></board>
-        <hr /><pre>{{debugState}}</pre>`,
+        <board [board]="selectedBoard"></board>`,
 })
 export default class KanbanComponent {
     state: KanbanState;
     constructor(store: Store<KanbanState>, private kanbanActions: KanbanActions) {
         store.subscribe(s => this.state = s);
+        store.subscribe(s => console.log(this.debugState));
     }
 
     get debugState() {
