@@ -5,6 +5,8 @@ import {provideStore, Store} from '@ngrx/store';
 import BoardComponent from './components/board.component';
 import BoardHeaderComponent from './components/boardHeader.component';
 import BoardSelectorComponent from './components/boardSelector.component';
+import CardComponent from './components/card.component';
+import ColumnComponent from './components/column.component';
 import CreatorComponent from './components/creator.component';
 import KanbanComponent from './components/kanban.component';
 import KanbanHeaderComponent from './components/kanbanHeader.component';
@@ -24,6 +26,8 @@ const dispatchedKanbanActions = {
         BoardComponent,
         BoardHeaderComponent,
         BoardSelectorComponent,
+        CardComponent,
+        ColumnComponent,
         CreatorComponent,
         KanbanComponent,
         KanbanHeaderComponent,

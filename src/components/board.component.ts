@@ -18,29 +18,14 @@ import KanbanActions from '../kanban/kanban.ducks';
             <button>Rename Board</button>
             <button (click)="deleteBoard()">Delete Board</button>
         </div>
-
-        <ul>
-            <li *ngFor="let column of columns">
-                {{column.title}}
-                <input [value]="column.title" #columnTitleEditor />
-                <button (click)="renameColumn(column.id, columnTitleEditor.value)">Rename</button>
-                <button (click)="deleteColumn(column.id)">Delete Column</button> |
-                <button (click)="createCard(column.id)">Create Card</button>
-                <ul>
-                    <li *ngFor="let card of cards(column.id)">
-                        <b>{{card.title}}</b> - {{card.description}}
-                        <input [value]="card.title" #cardTitleEditor />
-                        <input [value]="card.description" #cardDescriptionEditor />
-                        <button (click)="updateCard(card.id, cardTitleEditor.value, cardDescriptionEditor.value)">Update</button>
-                        <button (click)="deleteCard(card.id)">Delete</button>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        <div>
+            <column *ngFor="let column of columns; trackBy: trackByColumnId" [column]="column"></column>
+        </div>
     </div>`,
 })
 export default class BoardComponent {
     state: KanbanState;
+    trackByColumnId = (idx, column) => column.id;
     @Input() board: Board;
 
     constructor(store: Store<KanbanState>, private kanbanActions: KanbanActions) {
@@ -69,35 +54,5 @@ export default class BoardComponent {
             cards: []
         };
         this.kanbanActions.column.create(newColumn);
-    }
-
-    renameColumn(columnId, title) {
-        this.kanbanActions.column.rename({ columnId, title });
-    }
-
-    deleteColumn(columnId) {
-        this.kanbanActions.column.delete(columnId);
-    }
-
-    // card related
-    cards(columnId) {
-        return this.state.cards.filter(c => c.columnId === columnId);
-    };
-
-    createCard(columnId) {
-        const newCard = {
-            columnId,
-            title: `${10 + (Math.random() * 89 & 100)}`,
-            description: `${100 + (Math.random() * 899 & 1000)}`
-        };
-        this.kanbanActions.card.create(newCard);
-    }
-
-    updateCard(cardId, title, description) {
-        this.kanbanActions.card.update({ cardId, title, description });
-    }
-
-    deleteCard(cardId) {
-        this.kanbanActions.card.delete(cardId);
     }
 }
