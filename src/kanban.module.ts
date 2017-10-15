@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {provideStore, Store} from '@ngrx/store';
+import {Store, StoreModule} from '@ngrx/store';
 
 import BoardComponent from './components/board.component';
 import BoardHeaderComponent from './components/boardHeader.component';
@@ -13,15 +13,18 @@ import KanbanHeaderComponent from './components/kanbanHeader.component';
 import SidebarComponent from './components/sidebar.component';
 import KanbanActions, {kanbanReducer, kanbanDispatchedActionsFactory} from './kanban/kanban.ducks';
 
-const store = provideStore(kanbanReducer);
+// const store = provideStore(kanbanReducer);
 const dispatchedKanbanActions = {
     provide: KanbanActions,
     useFactory: kanbanDispatchedActionsFactory,
     deps: [Store]
 };
-
+console.log(kanbanReducer);
 @NgModule({
-    imports: [ BrowserModule ],
+    imports: [
+        BrowserModule,
+        StoreModule.forRoot({ kanban: kanbanReducer })
+    ],
     declarations: [
         BoardComponent,
         BoardHeaderComponent,
@@ -34,6 +37,6 @@ const dispatchedKanbanActions = {
         SidebarComponent
     ],
     bootstrap: [ KanbanComponent ],
-    providers: [ store, dispatchedKanbanActions ]
+    providers: [ dispatchedKanbanActions ]
 })
 export class KanbanModule { }

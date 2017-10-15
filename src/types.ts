@@ -7,6 +7,10 @@ export type KanbanState = si.Immutable<{
     activeBoard?: string;
 }>;
 
+export type AppState = {
+    kanban: KanbanState;
+}
+
 export interface Board {
     id?: string;
     title: string;
