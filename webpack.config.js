@@ -21,7 +21,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js', '.ts'],
+    extensions: ['.js', '.ts'],
     alias: {
         'skeleton-css': 'skeleton-css/css/skeleton.css'
     }
@@ -29,18 +29,22 @@ module.exports = {
 
   module: {
     loaders: [
-      { test: /\.ts$/, loaders: ['ts', 'angular2-template'] },
-      { test: /\.html$/, loader: 'html' },
-      { test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/, loader: 'file?name=assets/[name].[hash].[ext]' },
-      { test: /\.css$/, exclude: root('src', 'app'), loader: ExtractTextPlugin.extract('style', 'css?sourceMap') },
-      { test: /\.css$/, include: root('src', 'app'), loader: 'raw' }
+      { test: /\.ts$/, loaders: ['ts-loader', 'angular2-template-loader'] },
+      { test: /\.html$/, loader: 'html-loader' },
+      { test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/, loader: 'file-loader?name=assets/[name].[hash].[ext]' },
+      { test: /\.css$/, exclude: root('src', 'app'), loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: 'css-loader' }) },
+      { test: /\.css$/, include: root('src', 'app'), loader: 'raw-loader' }
     ]
   },
 
   plugins: [
     new CommonsChunkPlugin({ name: ['app', 'vendor', 'polyfills'] }),
     new HtmlWebpackPlugin({ template: 'src/index.html' }),
-    new ExtractTextPlugin('[name].[hash].css')
+    new ExtractTextPlugin('[name].[hash].css'),
+    new webpack.ContextReplacementPlugin(
+      /(.+)?angular(\\|\/)core(.+)?/,
+      path.resolve(__dirname, './src')
+    )
   ],
 
   devServer: {
