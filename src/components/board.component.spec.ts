@@ -1,11 +1,13 @@
 import {Store} from '@ngrx/store';
+import {from} from 'rxjs/observable/from';
+
 import {AppState, KanbanState} from '../types';
 import BoardComponent from './board.component';
 
 describe('BoardComponent', () => {
     const storeSubscribeSpy = jasmine.createSpy('storeSubscribe');
     const columnCreateSpy = jasmine.createSpy('columnCreate');
-    const fakeStore = { subscribe: storeSubscribeSpy as any } as Store<AppState>;
+    const fakeStore = { select: () => from([{} as AppState])} as any as Store<AppState>;
     const fakeActions = {
         column: {
             create: columnCreateSpy
