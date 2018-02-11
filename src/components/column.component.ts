@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 
-import {Card, Column, KanbanState} from '../types';
+import {Card, Column, KanbanState, AppState} from '../types';
 import KanbanActions from '../kanban/kanban.ducks';
 
 @Component({
@@ -21,13 +21,13 @@ export default class ColumnComponent {
     trackByCardId = (idx, card) => card.id;
     @Input() column: Column;
 
-    constructor(store: Store<KanbanState>, private kanbanActions: KanbanActions) {
-        store.subscribe(s => this.state = s);
+    constructor(store: Store<AppState>, private kanbanActions: KanbanActions) {
+        store.select(s => s.kanban).subscribe(s => this.state = s);
     }
 
     get cards() {
         return this.state.cards.filter(c => c.columnId === this.column.id);
-    };
+    }
 
     renameColumn(title) {
         const columnId = this.column.id;
