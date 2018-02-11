@@ -17,5 +17,6 @@ const initialKanban: KanbanState = si.from({
     cards: [],
     columns: []
 });
+
 export const kanbanReducer = createReducer(kanbanActions, initialKanban);
 export const kanbanDispatchedActionsFactory = store => createDispatchedActions(kanbanActions, store);

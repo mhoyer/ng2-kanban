@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 
-import {Card, KanbanState} from '../types';
+import {AppState, Card, KanbanState} from '../types';
 import KanbanActions from '../kanban/kanban.ducks';
 
 @Component({
@@ -20,8 +20,8 @@ export default class CardComponent {
     state: KanbanState;
     @Input() card: Card;
 
-    constructor(store: Store<KanbanState>, private kanbanActions: KanbanActions) {
-        store.subscribe(s => this.state = s);
+    constructor(store: Store<AppState>, private kanbanActions: KanbanActions) {
+        store.select(s => s.kanban).subscribe(s => this.state = s);
     }
 
     updateCard(cardId, title, description) {

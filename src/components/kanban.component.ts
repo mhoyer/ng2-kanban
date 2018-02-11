@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {KanbanState} from '../types';
+import {AppState, KanbanState} from '../types';
 import KanbanActions from '../kanban/kanban.ducks';
 
 @Component({
@@ -14,9 +14,9 @@ import KanbanActions from '../kanban/kanban.ducks';
 })
 export default class KanbanComponent {
     state: KanbanState;
-    constructor(store: Store<KanbanState>, private kanbanActions: KanbanActions) {
-        store.subscribe(s => this.state = s);
-        store.subscribe(s => console.log(this.debugState));
+    constructor(store: Store<AppState>, private kanbanActions: KanbanActions) {
+        const kanbanState$ = store.select(x => x.kanban);
+        kanbanState$.subscribe(s => this.state = s);
     }
 
     get debugState() {

@@ -1,11 +1,11 @@
 import {Store} from '@ngrx/store';
-import {KanbanState} from '../types';
+import {AppState, KanbanState} from '../types';
 import BoardComponent from './board.component';
 
 describe('BoardComponent', () => {
     const storeSubscribeSpy = jasmine.createSpy('storeSubscribe');
     const columnCreateSpy = jasmine.createSpy('columnCreate');
-    const fakeStore = { subscribe: storeSubscribeSpy as any } as Store<KanbanState>;
+    const fakeStore = { subscribe: storeSubscribeSpy as any } as Store<AppState>;
     const fakeActions = {
         column: {
             create: columnCreateSpy

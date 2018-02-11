@@ -86,8 +86,8 @@ describe('Column reducers', () => {
     });
 
     describe('Deleting a column', () => {
-        const firstColumn = { id: 'first', title: '' };
-        const secondColumn = { id: 'second', title: '' };
+        const firstColumn = { id: 'first', title: '', boardId: '' };
+        const secondColumn = { id: 'second', title: '', boardId: '' };
 
         beforeEach(() => {
             prevState = initState.setIn(['columns'], [firstColumn, secondColumn]);
@@ -116,8 +116,8 @@ describe('Column reducers', () => {
     });
 
     describe('Deleting multiple columns', () => {
-        const firstColumn = { id: 'first', title: '' };
-        const secondColumn = { id: 'second', title: '' };
+        const firstColumn = { id: 'first', title: '', boardId: '' };
+        const secondColumn = { id: 'second', title: '', boardId: '' };
 
         beforeEach(() => {
             prevState = initState.setIn(['columns'], [firstColumn, secondColumn]);
